@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuis Interaktif - TKA SD KELAS 6</title>
     <style>
+        /* === TEMA & VARIABEL === */
         :root {
-            --royal-blue: #0A2463;
-            --gold: #D4AF37;
+            --royal-blue: #002366;
+            --gold: #FFD700;
             --light-bg: #F4F7F6;
             --white: #FFFFFF;
             --text-dark: #333333;
@@ -18,59 +19,76 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { margin: 0; background-color: var(--light-bg); color: var(--text-dark); }
         
-        /* Header & Theme */
-        header { background: var(--royal-blue); color: var(--white); padding: 15px 20px; text-align: center; border-bottom: 4px solid var(--gold); position: relative; }
+        /* Header */
+        header { background: var(--royal-blue); color: var(--white); padding: 15px 20px; text-align: center; border-bottom: 4px solid var(--gold); }
         h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Utility Classes */
+        /* Utilities */
         .hidden { display: none !important; }
         .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-        .btn { background: var(--royal-blue); color: var(--gold); border: 2px solid var(--gold); padding: 10px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background: var(--gold); color: var(--royal-blue); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn { background: var(--royal-blue); color: var(--gold); border: 2px solid var(--royal-blue); padding: 10px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; font-size: 1rem; }
+        .btn:hover { background: var(--gold); color: var(--royal-blue); border-color: var(--gold); }
+        .btn-outline { background: transparent; color: var(--royal-blue); border: 2px solid var(--royal-blue); }
+        .btn-outline:hover { background: var(--royal-blue); color: var(--white); }
         
         /* Login Screen */
-        #login-screen { text-align: center; margin-top: 100px; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        #pin-input { padding: 10px; font-size: 1.2rem; text-align: center; letter-spacing: 2px; border: 2px solid var(--royal-blue); border-radius: 5px; margin-bottom: 20px; width: 100%; max-width: 300px;}
+        #login-screen { text-align: center; margin-top: 80px; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .pin-wrapper { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; }
+        #pin-input { padding: 12px; font-size: 1.2rem; text-align: center; letter-spacing: 2px; border: 2px solid var(--royal-blue); border-radius: 5px; width: 100%; max-width: 250px; }
+        #btn-toggle-pin { background: #eee; border: 1px solid #ccc; padding: 12px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        #btn-toggle-pin:hover { background: #ddd; }
         
-        /* Quiz Layout */
-        #quiz-info { display: flex; justify-content: space-between; background: var(--gold); color: var(--royal-blue); padding: 10px 20px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; }
-        .card { background: var(--white); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding-bottom: 20px; margin-bottom: 20px;}
+        /* Quiz Screen */
+        #quiz-info { display: flex; justify-content: space-between; background: var(--gold); color: var(--royal-blue); padding: 12px 20px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; font-size: 1.1rem; }
+        .card { background: var(--white); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding-bottom: 20px; margin-bottom: 20px; }
         
         /* Sticky Wacana */
-        .wacana-header { background: #E8F0FE; border-left: 5px solid var(--royal-blue); padding: 15px; position: sticky; top: 0; z-index: 10; font-size: 0.95rem; line-height: 1.5; border-bottom: 1px solid #ccc; max-height: 250px; overflow-y: auto;}
+        .wacana-header { background: #E8F0FE; border-left: 5px solid var(--royal-blue); padding: 15px; position: sticky; top: 0; z-index: 10; font-size: 0.95rem; line-height: 1.6; border-bottom: 1px solid #ccc; max-height: 250px; overflow-y: auto; }
         
         .question-body { padding: 20px; font-size: 1.1rem; line-height: 1.6; }
-        .question-img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; }
+        .question-img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; display: block; }
         
         /* Options */
         .options-container { display: flex; flex-direction: column; gap: 10px; padding: 0 20px; }
-        .option-label { display: flex; align-items: center; padding: 12px; background: var(--light-bg); border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .option-label { display: flex; align-items: flex-start; padding: 12px; background: var(--light-bg); border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; line-height: 1.5; }
         .option-label:hover { background: #e2e8f0; }
-        .option-label input { margin-right: 15px; transform: scale(1.2); }
+        .option-label input { margin-top: 4px; margin-right: 15px; transform: scale(1.2); cursor: pointer; }
         
-        /* True/False UI */
+        /* True/False (BS) UI */
         .bs-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .bs-table th, .bs-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .bs-table th, .bs-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         .bs-table th { background: var(--royal-blue); color: white; text-align: center; }
-        .bs-radio-group { display: flex; justify-content: space-around; }
+        .bs-radio-group { display: flex; justify-content: space-evenly; }
+        .bs-radio-group label { cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         
         /* Navigation */
-        .nav-buttons { display: flex; justify-content: space-between; padding: 20px; border-top: 1px solid #eee; margin-top: 20px;}
+        .nav-buttons { display: flex; justify-content: space-between; padding: 20px; border-top: 1px solid #eee; margin-top: 20px; }
         
         /* Result Screen */
         #result-screen { text-align: center; padding: 40px 20px; background: var(--white); border-radius: 10px; }
-        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--royal-blue); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: bold; margin: 0 auto 20px; border: 5px solid var(--gold); }
-        .review-box { text-align: left; margin-top: 20px; }
-        .review-item { padding: 15px; border-bottom: 1px solid #ddd; }
-        .review-item.correct { border-left: 5px solid var(--success); }
-        .review-item.wrong { border-left: 5px solid var(--danger); }
-        .pembahasan { background: #f9f9f9; padding: 10px; font-style: italic; margin-top: 10px; border-radius: 5px; color: #555;}
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--royal-blue); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: bold; margin: 0 auto 20px; border: 5px solid var(--gold); }
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 30px; }
+        .review-btn { padding: 10px; text-align: center; font-weight: bold; border-radius: 5px; cursor: pointer; color: white; border: none; }
+        .review-btn.correct { background: var(--success); }
+        .review-btn.wrong { background: var(--danger); }
+        
+        /* Modal Popup Pembahasan */
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: var(--white); padding: 25px; border-radius: 10px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--danger); font-weight: bold; }
+        .pembahasan-box { background: #e8f4f8; border-left: 5px solid var(--royal-blue); padding: 15px; margin-top: 15px; border-radius: 0 5px 5px 0; }
         
         /* Anti Cheat Overlay */
         #warning-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(230, 57, 70, 0.95); color: white; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; text-align: center; padding: 20px; }
 
-        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; }
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #777; margin-top: 20px; }
+
+        /* Print CSS for Certificate */
+        @media print {
+            body * { visibility: hidden; }
+            #sertifikat-print, #sertifikat-print * { visibility: visible; }
+            #sertifikat-print { position: absolute; left: 0; top: 0; width: 100%; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -82,11 +100,13 @@
     <div class="container">
         <div id="login-screen">
             <h2>Masukkan PIN Akses</h2>
-            <p>Silakan masukkan PIN untuk memulai ujian.</p>
-            <input type="password" id="pin-input" placeholder="••••••••" autocomplete="off">
-            <br>
+            <p>Silakan masukkan PIN ujian yang valid untuk memulai.</p>
+            <div class="pin-wrapper">
+                <input type="password" id="pin-input" placeholder="PIN Ujian" autocomplete="off">
+                <button type="button" id="btn-toggle-pin" onclick="app.togglePin()">Lihat</button>
+            </div>
             <button class="btn" onclick="app.startKuis()">MULAI KUIS</button>
-            <p id="login-error" style="color: red; margin-top: 10px;" class="hidden">PIN Salah!</p>
+            <p id="login-error" style="color: var(--danger); margin-top: 15px; font-weight: bold;" class="hidden">PIN Tidak Valid!</p>
         </div>
 
         <div id="quiz-screen" class="hidden">
@@ -99,29 +119,50 @@
                 </div>
 
             <div class="nav-buttons">
-                <button class="btn" id="btn-prev" onclick="app.prevQuestion()">&#8592; Sebelumnya</button>
+                <button class="btn btn-outline" id="btn-prev" onclick="app.prevQuestion()">&#8592; Sebelumnya</button>
                 <button class="btn" id="btn-next" onclick="app.nextQuestion()">Selanjutnya &#8594;</button>
                 <button class="btn hidden" id="btn-submit" onclick="app.finishQuiz()">Selesai Kuis</button>
             </div>
         </div>
 
         <div id="result-screen" class="hidden">
-            <h2>Kuis Selesai!</h2>
+            <h2>Ujian Telah Selesai</h2>
             <div class="score-circle" id="final-score">0</div>
             <h3 id="status-kelulusan"></h3>
-            <button class="btn" id="btn-cert" onclick="app.downloadCertificate()">Unduh Sertifikat</button>
-            <button class="btn" onclick="app.showReview()" style="margin-left:10px;">Lihat Pembahasan</button>
             
-            <div id="review-container" class="review-box hidden"></div>
+            <div style="margin-top: 20px;">
+                <button class="btn hidden" id="btn-cert" onclick="app.downloadCertificate()">Unduh Sertifikat</button>
+            </div>
+
+            <h3 style="margin-top: 40px;">Review Jawaban (Klik Nomor Soal)</h3>
+            <p style="font-size: 0.9rem; color: #666;">Hijau = Benar | Merah = Salah</p>
+            <div id="review-grid" class="review-grid"></div>
+        </div>
+    </div>
+
+    <div id="modal-overlay" class="hidden">
+        <div class="modal-content">
+            <span class="modal-close" onclick="app.closeModal()">&times;</span>
+            <h3>Review Pembahasan</h3>
+            <div id="modal-body" style="margin-top: 15px; line-height: 1.6;"></div>
         </div>
     </div>
 
     <div id="warning-overlay" class="hidden">
-        <h1>PERINGATAN!</h1>
-        <p>Anda terdeteksi meninggalkan halaman ujian.</p>
-        <p>Peringatan ke-<span id="warn-count">0</span> dari 3.</p>
-        <p>Jika mencapai 3 kali, Anda akan otomatis didiskualifikasi.</p>
-        <button class="btn" onclick="app.closeWarning()" style="margin-top:20px; background:white; color:var(--danger)">Kembali ke Ujian</button>
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">PERINGATAN!</h1>
+        <p style="font-size: 1.2rem;">Anda terdeteksi meninggalkan halaman atau mengganti tab.</p>
+        <p style="font-size: 1.5rem; font-weight: bold; margin: 20px 0;">Peringatan ke-<span id="warn-count">0</span> dari 3.</p>
+        <p>Jika mencapai 3 kali, Anda akan otomatis didiskualifikasi dan nilai langsung dihitung.</p>
+        <button class="btn" onclick="app.closeWarning()" style="margin-top:30px; background:white; color:var(--danger)">Saya Mengerti, Kembali ke Ujian</button>
+    </div>
+
+    <div id="sertifikat-print" class="hidden" style="padding: 50px; border: 10px solid var(--gold); border-radius: 15px; font-family: serif; background: white;">
+        <h1 style="color: var(--royal-blue); font-size: 3rem; margin-bottom: 5px;">SERTIFIKAT PENGHARGAAN</h1>
+        <p style="font-size: 1.5rem; margin-bottom: 20px;">Diberikan atas kelulusan pada Kuis:</p>
+        <h2 id="cert-title" style="font-size: 2rem;"></h2>
+        <p style="font-size: 1.5rem; margin-top: 30px;">Dengan Nilai Akhir:</p>
+        <h1 id="cert-score" style="font-size: 5rem; color: var(--gold); margin: 10px 0;"></h1>
+        <p style="font-style: italic; margin-top: 40px; font-size: 1.2rem;">"Belajar Sukses!"</p>
     </div>
 
     <footer>
@@ -130,23 +171,19 @@
 
 <script>
 /**
- * ==========================================
- * 1. KONFIGURASI DATA (SESUAI PERMINTAAN)
- * ==========================================
+ * 4. KONFIGURASI DATA (Sesuai Permintaan)
  */
-const JUDUL_KUIS = "TKA SD - BAHASA INDONESIA";
+const JUDUL_KUIS = "TKA SD KELAS 6";
 const PIN_AKSES = "SUKSESBELAJAR100%";
 const WAKTU_MENIT = 70;
 const TARGET_TOTAL_SOAL = 30;
 
-// Update UI Titile
+// Update UI
 document.getElementById('app-title').innerText = JUDUL_KUIS;
-document.title = JUDUL_KUIS;
+document.title = "Kuis - " + JUDUL_KUIS;
 
 /**
- * ==========================================
- * 2. DATABASE SOAL RAW
- * ==========================================
+ * DATA SOAL RAW 
  */
 const RAW_SINGLE = [
 "[Tipe: PG] Di sebuah ekosistem laut yang asri, terdapat terumbu karang yang menjadi rumah bagi berbagai **biota**. Apa makna istilah biologi yang dicetak tebal tersebut? | Sekumpulan tumbuhan laut ~ Seluruh flora dan fauna di wilayah tertentu ~ Jenis ikan hias yang langka ~ Batuan yang ada di dasar laut | B | Biota merujuk pada keseluruhan kehidupan (flora dan fauna) di suatu wilayah.",
@@ -329,53 +366,72 @@ Raja Hutan baru saja kehilangan barang paling berharganya. Barang itu bukan seka
 ###`;
 
 /**
- * ==========================================
- * 3. CORE LOGIC APLIKASI KUIS
- * ==========================================
+ * LOGIKA APLIKASI (ENGINE KUIS)
  */
-
 class QuizApp {
     constructor() {
         this.finalQuestionList = [];
+        this.bankCadangan = []; 
         this.currentIndex = 0;
         this.userAnswers = {};
         this.timerInterval = null;
         this.timeLeft = WAKTU_MENIT * 60;
         this.warningCount = 0;
+        this.score = 0;
+        this.isFinished = false;
     }
 
-    // --- UTILITIES ---
+    // 1. FITUR UTAMA: Parse Format Markdown
     parseFormat(text) {
         if(!text) return "";
-        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
-        // Cek dan render Image
-        formatted = formatted.replace(/\[IMG:\s*(.*?)\]/g, '<img src="$1" class="question-img" alt="Ilustrasi Soal">');
-        return formatted;
+        let fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+        fmt = fmt.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italic
+        fmt = fmt.replace(/\[IMG:\s*(.*?)\]/g, '<img src="$1" class="question-img" alt="Ilustrasi Soal">'); // Image
+        return fmt;
     }
 
-    shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+    // 1. FITUR UTAMA: Auto-Clean Meta Tags
+    cleanTags(text) {
+        if(!text) return "";
+        return text.replace(/\[Tipe:\s*(PG|PGK|BS)\]/gi, '').replace(/\[(PG|PGK|BS)\]/gi, '').trim();
+    }
+
+    // 1. FITUR UTAMA: Toggle PIN
+    togglePin() {
+        const pinInput = document.getElementById('pin-input');
+        const btnToggle = document.getElementById('btn-toggle-pin');
+        if (pinInput.type === "password") {
+            pinInput.type = "text";
+            btnToggle.innerText = "Sembunyi";
+        } else {
+            pinInput.type = "password";
+            btnToggle.innerText = "Lihat";
         }
-        return array;
     }
 
+    // UTILITY: Pengacak Array
+    shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // UTILITY: Parsing baris data ke Object
     parseSingleQuestion(rawStr, wacana = null) {
         let parts = rawStr.split(' | ');
         if(parts.length < 4) return null;
         
         let header = parts[0];
         let tipe = header.includes('[Tipe: BS]') ? 'BS' : (header.includes('[Tipe: PGK]') ? 'PGK' : 'PG');
-        let questionText = header.replace(/\[Tipe:.*?\]\s*/, '').trim();
         
-        let optionsRaw = parts[1].split('~').map(o => o.trim());
+        // Safe Separator dengan Tilde (~)
+        let optionsRaw = parts[1].split('~').map(o => o.trim()); 
         let key = parts[2].trim();
         let explanation = parts[3].trim();
 
-        // Khusus parsing BS
         let parsedOptions = [];
         if(tipe === 'BS') {
             optionsRaw.forEach(opt => {
@@ -383,81 +439,93 @@ class QuizApp {
                 if(match) {
                     parsedOptions.push({ text: match[1].trim(), correct: match[2].trim().toUpperCase() });
                 } else {
-                    parsedOptions.push({ text: opt, correct: 'BENAR' }); // fallback
+                    parsedOptions.push({ text: opt, correct: 'BENAR' }); // Fallback
                 }
             });
         } else {
             parsedOptions = optionsRaw;
         }
 
-        return { tipe, wacana, question: questionText, options: parsedOptions, key, explanation };
+        return { tipe, wacana, question: header, options: parsedOptions, key, explanation };
     }
 
+    // 2. LOGIKA MIXER SOAL V7.1
     prepareData() {
-        let singlePool = RAW_SINGLE.map(q => this.parseSingleQuestion(q)).filter(q => q !== null);
-        let clusterPool = [];
+        let singlePool = this.shuffleArray(RAW_SINGLE.map(q => this.parseSingleQuestion(q)).filter(q => q !== null));
+        let clusterPoolRaw = [];
 
-        // Parse Clusters
+        // Parse semua wacana/cluster
         let rawClusters = RAW_CLUSTER_TEXT.split('###').map(c => c.trim()).filter(c => c.length > 10);
         rawClusters.forEach(clusterData => {
             let lines = clusterData.split('\n');
             let wacana = "";
-            let clusterQuestions = [];
+            let clusterQs = [];
             
             lines.forEach(line => {
                 if(line.startsWith('[WACANA:')) {
                     wacana = line.replace(/\[WACANA:.*?\]\s*/, '').trim();
                 } else if(line.startsWith('[Tipe:')) {
                     let q = this.parseSingleQuestion(line, wacana);
-                    if(q) clusterQuestions.push(q);
+                    if(q) clusterQs.push(q);
                 }
             });
-            
-            if(clusterQuestions.length > 0) clusterPool.push(clusterQuestions);
+            if(clusterQs.length > 0) clusterPoolRaw.push({ wacana: wacana, questions: clusterQs });
         });
 
-        // SHUFFLE POOLS
-        this.shuffleArray(singlePool);
-        this.shuffleArray(clusterPool);
-
-        // MIXER LOGIC TARGET 30
+        let clusterPool = this.shuffleArray(clusterPoolRaw);
         let qList = [];
 
-        // Pemanasan (1-3): 3 Single
+        // Helper untuk mengisi cluster
+        const fillCluster = (targetNeeded) => {
+            let countAdded = 0;
+            while(countAdded < targetNeeded && clusterPool.length > 0) {
+                let cl = clusterPool.shift();
+                let qs = this.shuffleArray(cl.questions);
+                let take = Math.min(2, targetNeeded - countAdded, qs.length); // Max 2 per cluster
+                
+                for(let i=0; i<take; i++) {
+                    qList.push(qs[i]);
+                    countAdded++;
+                }
+                // Sisa soal di dalam cluster dimasukkan ke Bank Cadangan
+                for(let i=take; i<qs.length; i++) {
+                    this.bankCadangan.push(qs[i]);
+                }
+            }
+        };
+
+        // STEP 1: Pemanasan (No 1-3) -> 3 Single
         qList.push(...singlePool.splice(0, 3));
 
-        // Literasi A (4-10): Clusters (Max 2 per cluster)
-        while(qList.length < 10 && clusterPool.length > 0) {
-            let cl = clusterPool.shift();
-            this.shuffleArray(cl);
-            qList.push(...cl.slice(0, 2));
-        }
+        // STEP 2: Literasi A (No 4-10) -> 7 soal dari Cluster
+        fillCluster(7);
 
-        // Selingan (11-13): 3 Single
+        // STEP 3: Selingan (No 11-13) -> 3 Single
         qList.push(...singlePool.splice(0, 3));
 
-        // Literasi B (14-20): Clusters
-        while(qList.length < 20 && clusterPool.length > 0) {
-            let cl = clusterPool.shift();
-            this.shuffleArray(cl);
-            qList.push(...cl.slice(0, 2));
+        // STEP 4: Literasi B (No 14-20) -> 7 soal dari Cluster
+        fillCluster(7);
+
+        // STEP 5: Penutup (No 21-30) -> Sisa kuota campur
+        let sisaPool = [...singlePool, ...this.bankCadangan];
+        // Masukkan sisa cluster yang belum tersentuh ke sisaPool
+        clusterPool.forEach(cl => sisaPool.push(...cl.questions)); 
+        
+        sisaPool = this.shuffleArray(sisaPool);
+
+        let needed = TARGET_TOTAL_SOAL - qList.length;
+        if(needed > 0) {
+            qList.push(...sisaPool.splice(0, needed));
         }
 
-        // Penutup (21-30): Sisa Single / sisa dari cluster yang dipecah
-        let sisaPool = [...singlePool];
-        clusterPool.forEach(cl => sisaPool.push(...cl));
-        this.shuffleArray(sisaPool);
-
-        while(qList.length < TARGET_TOTAL_SOAL && sisaPool.length > 0) {
-            qList.push(sisaPool.shift());
-        }
-
+        // Data Storage: Simpan sisa asli ke Bank Cadangan sesuai spesifikasi
+        this.bankCadangan = sisaPool; 
         this.finalQuestionList = qList.slice(0, TARGET_TOTAL_SOAL);
     }
 
-    // --- APP FLOW ---
+    // ALUR APLIKASI
     startKuis() {
-        let pin = document.getElementById('pin-input').value;
+        const pin = document.getElementById('pin-input').value;
         if(pin !== PIN_AKSES) {
             document.getElementById('login-error').classList.remove('hidden');
             return;
@@ -489,13 +557,15 @@ class QuizApp {
 
     setupAntiCheat() {
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden' && document.getElementById('quiz-screen').classList.contains('hidden') === false) {
+            if (this.isFinished) return;
+            if (document.visibilityState === 'hidden' && !document.getElementById('quiz-screen').classList.contains('hidden')) {
                 this.warningCount++;
                 document.getElementById('warn-count').innerText = this.warningCount;
                 document.getElementById('warning-overlay').classList.remove('hidden');
                 
                 if(this.warningCount >= 3) {
-                    alert("ANDA DIDISKUALIFIKASI KARENA MELANGGAR ATURAN (3x GANTI TAB).");
+                    this.closeWarning();
+                    alert("DISKUALIFIKASI! Anda telah meninggalkan ujian 3 kali.");
                     this.finishQuiz();
                 }
             }
@@ -506,6 +576,7 @@ class QuizApp {
         document.getElementById('warning-overlay').classList.add('hidden');
     }
 
+    // RENDER UI SOAL
     renderQuestion() {
         let q = this.finalQuestionList[this.currentIndex];
         document.getElementById('q-counter').innerText = `Soal ${this.currentIndex + 1} / ${this.finalQuestionList.length}`;
@@ -513,6 +584,7 @@ class QuizApp {
         let card = document.getElementById('question-card');
         card.innerHTML = '';
 
+        // Render Sticky Header
         if(q.wacana) {
             let wacanaDiv = document.createElement('div');
             wacanaDiv.className = 'wacana-header';
@@ -520,27 +592,27 @@ class QuizApp {
             card.appendChild(wacanaDiv);
         }
 
+        // Render Body (dengan Auto Clean Tag)
         let bodyDiv = document.createElement('div');
         bodyDiv.className = 'question-body';
-        bodyDiv.innerHTML = `<strong>[${q.tipe}]</strong> ${this.parseFormat(q.question)}`;
+        let cleanQText = this.cleanTags(q.question);
+        bodyDiv.innerHTML = `${this.currentIndex + 1}. ${this.parseFormat(cleanQText)}`;
         card.appendChild(bodyDiv);
 
         let optContainer = document.createElement('div');
         optContainer.className = 'options-container';
 
+        // Render Opsi Berdasarkan Tipe
         if(q.tipe === 'BS') {
-            let table = `<table class="bs-table"><tr><th>Pernyataan</th><th width="150">Benar / Salah</th></tr>`;
+            let table = `<table class="bs-table"><tr><th>Pernyataan</th><th width="160">Benar / Salah</th></tr>`;
             q.options.forEach((opt, idx) => {
-                let savedAnswer = this.userAnswers[`${this.currentIndex}_${idx}`] || '';
-                let chkBenar = savedAnswer === 'BENAR' ? 'checked' : '';
-                let chkSalah = savedAnswer === 'SALAH' ? 'checked' : '';
-
+                let savedAns = this.userAnswers[`${this.currentIndex}_${idx}`] || '';
                 table += `<tr>
                     <td>${this.parseFormat(opt.text)}</td>
                     <td>
                         <div class="bs-radio-group">
-                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="BENAR" onchange="app.saveAnswer('BS', '${idx}', 'BENAR')" ${chkBenar}> B</label>
-                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="SALAH" onchange="app.saveAnswer('BS', '${idx}', 'SALAH')" ${chkSalah}> S</label>
+                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="BENAR" onchange="app.saveAnswer('BS', '${idx}', 'BENAR')" ${savedAns==='BENAR'?'checked':''}> Benar</label>
+                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="SALAH" onchange="app.saveAnswer('BS', '${idx}', 'SALAH')" ${savedAns==='SALAH'?'checked':''}> Salah</label>
                         </div>
                     </td>
                 </tr>`;
@@ -555,29 +627,27 @@ class QuizApp {
                 optContainer.innerHTML += `
                     <label class="option-label">
                         <input type="checkbox" value="${labels[idx]}" onchange="app.saveAnswer('PGK', '${labels[idx]}', this.checked)" ${isChecked}>
-                        ${labels[idx]}. ${this.parseFormat(opt)}
+                        <div><strong>${labels[idx]}.</strong> ${this.parseFormat(opt)}</div>
                     </label>
                 `;
             });
         }
-        else { // PG Biasa
+        else { // PG
             let labels = ['A','B','C','D','E'];
             q.options.forEach((opt, idx) => {
                 let isChecked = this.userAnswers[this.currentIndex] === labels[idx] ? 'checked' : '';
                 optContainer.innerHTML += `
                     <label class="option-label">
                         <input type="radio" name="pg_${this.currentIndex}" value="${labels[idx]}" onchange="app.saveAnswer('PG', '${labels[idx]}')" ${isChecked}>
-                        ${labels[idx]}. ${this.parseFormat(opt)}
+                        <div><strong>${labels[idx]}.</strong> ${this.parseFormat(opt)}</div>
                     </label>
                 `;
             });
         }
-        
         card.appendChild(optContainer);
 
-        // Nav Logic
+        // Nav Buttons
         document.getElementById('btn-prev').disabled = this.currentIndex === 0;
-        
         if(this.currentIndex === this.finalQuestionList.length - 1) {
             document.getElementById('btn-next').classList.add('hidden');
             document.getElementById('btn-submit').classList.remove('hidden');
@@ -592,30 +662,29 @@ class QuizApp {
             this.userAnswers[this.currentIndex] = val1;
         } else if (type === 'PGK') {
             if(!this.userAnswers[this.currentIndex]) this.userAnswers[this.currentIndex] = [];
-            if(val2) {
-                this.userAnswers[this.currentIndex].push(val1);
-            } else {
-                this.userAnswers[this.currentIndex] = this.userAnswers[this.currentIndex].filter(v => v !== val1);
-            }
+            if(val2) this.userAnswers[this.currentIndex].push(val1);
+            else this.userAnswers[this.currentIndex] = this.userAnswers[this.currentIndex].filter(v => v !== val1);
         } else if (type === 'BS') {
             this.userAnswers[`${this.currentIndex}_${val1}`] = val2;
         }
     }
 
-    nextQuestion() {
-        // Validasi BS harus diisi semua
+    // 1. FITUR UTAMA: Validasi wajib isi BS
+    validateCurrentBS() {
         let q = this.finalQuestionList[this.currentIndex];
         if(q.tipe === 'BS') {
-            let dijawabSemua = true;
             for(let i=0; i<q.options.length; i++) {
-                if(!this.userAnswers[`${this.currentIndex}_${i}`]) dijawabSemua = false;
-            }
-            if(!dijawabSemua) {
-                alert("Harap pilih Benar atau Salah untuk semua pernyataan sebelum lanjut.");
-                return;
+                if(!this.userAnswers[`${this.currentIndex}_${i}`]) return false;
             }
         }
+        return true;
+    }
 
+    nextQuestion() {
+        if(!this.validateCurrentBS()) {
+            alert("Harap pilih opsi 'Benar' atau 'Salah' untuk seluruh pernyataan sebelum lanjut.");
+            return;
+        }
         if(this.currentIndex < this.finalQuestionList.length - 1) {
             this.currentIndex++;
             this.renderQuestion();
@@ -630,76 +699,96 @@ class QuizApp {
     }
 
     finishQuiz() {
+        if(!this.isFinished && !this.validateCurrentBS() && this.timeLeft > 0) {
+            if(!confirm("Pernyataan Benar/Salah pada soal ini belum lengkap dijawab. Yakin ingin mengakhiri?")) return;
+        }
+        this.isFinished = true;
         clearInterval(this.timerInterval);
         document.getElementById('quiz-screen').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
+        
         this.calculateScore();
+        this.buildReviewGrid();
     }
 
     calculateScore() {
         let totalBenar = 0;
-        
         this.finalQuestionList.forEach((q, i) => {
-            q.isCorrect = false; // flag for review
-            
+            q.isCorrect = false;
             if(q.tipe === 'PG') {
                 if(this.userAnswers[i] === q.key) { totalBenar++; q.isCorrect = true; }
-            } 
-            else if (q.tipe === 'PGK') {
+            } else if (q.tipe === 'PGK') {
                 let ansArray = (this.userAnswers[i] || []).sort().join(',');
                 let keyArray = q.key.replace(/\s/g, '').split(',').sort().join(',');
                 if(ansArray === keyArray) { totalBenar++; q.isCorrect = true; }
-            } 
-            else if (q.tipe === 'BS') {
-                let bsBenar = true;
+            } else if (q.tipe === 'BS') {
+                let isRowBenar = true;
                 for(let j=0; j<q.options.length; j++) {
-                    if(this.userAnswers[`${i}_${j}`] !== q.options[j].correct) bsBenar = false;
+                    if(this.userAnswers[`${i}_${j}`] !== q.options[j].correct) isRowBenar = false;
                 }
-                if(bsBenar) { totalBenar++; q.isCorrect = true; }
+                if(isRowBenar) { totalBenar++; q.isCorrect = true; }
             }
         });
 
-        let finalScore = Math.round((totalBenar / this.finalQuestionList.length) * 100);
-        this.score = finalScore;
+        this.score = Math.round((totalBenar / this.finalQuestionList.length) * 100);
+        document.getElementById('final-score').innerText = this.score;
         
-        document.getElementById('final-score').innerText = finalScore;
         let stat = document.getElementById('status-kelulusan');
-        let btnCert = document.getElementById('btn-cert');
-
-        if(finalScore >= 80) {
-            stat.innerText = "LULUS! Selamat Anda melampaui KKM.";
+        if(this.score >= 80) {
+            stat.innerText = "LULUS! Anda melampaui batas KKM.";
             stat.style.color = "var(--success)";
-            btnCert.classList.remove('hidden');
+            document.getElementById('btn-cert').classList.remove('hidden');
         } else {
-            stat.innerText = "BELUM LULUS. Silakan pelajari kembali materi.";
+            stat.innerText = "BELUM LULUS. Silakan ulangi & pelajari kembali.";
             stat.style.color = "var(--danger)";
-            btnCert.classList.add('hidden');
         }
     }
 
-    showReview() {
-        let container = document.getElementById('review-container');
-        container.classList.remove('hidden');
-        container.innerHTML = "<h3>Review Pembahasan</h3>";
-
+    // Modal Popup Pembahasan Instan
+    buildReviewGrid() {
+        let grid = document.getElementById('review-grid');
+        grid.innerHTML = '';
         this.finalQuestionList.forEach((q, i) => {
-            let cssClass = q.isCorrect ? 'correct' : 'wrong';
-            let html = `<div class="review-item ${cssClass}">
-                <p><strong>Soal ${i+1}:</strong> ${this.parseFormat(q.question)}</p>
-                <p><strong>Kunci Jawaban:</strong> ${q.key !== '-' ? q.key : 'Lihat Pembahasan'}</p>
-                <div class="pembahasan"><strong>Pembahasan:</strong> ${this.parseFormat(q.explanation)}</div>
-            </div>`;
-            container.innerHTML += html;
+            let btn = document.createElement('button');
+            btn.className = `review-btn ${q.isCorrect ? 'correct' : 'wrong'}`;
+            btn.innerText = i + 1;
+            btn.onclick = () => this.showModalPembahasan(i);
+            grid.appendChild(btn);
         });
     }
 
+    showModalPembahasan(index) {
+        let q = this.finalQuestionList[index];
+        let modalBody = document.getElementById('modal-body');
+        
+        let jawabanSiswa = q.tipe === 'BS' ? 'Lihat pada input Tabel Opsi' : (this.userAnswers[index] || 'Tidak Menjawab');
+        
+        modalBody.innerHTML = `
+            ${q.wacana ? `<div style="font-size:0.85rem; color:#555; margin-bottom:10px;"><em>[Wacana Terlampir di Kartu Soal]</em></div>` : ''}
+            <p><strong>Pertanyaan:</strong><br>${this.parseFormat(this.cleanTags(q.question))}</p>
+            <p style="color:var(--royal-blue)"><strong>Jawaban Anda:</strong> ${jawabanSiswa}</p>
+            <p style="color:var(--success)"><strong>Kunci Jawaban:</strong> ${q.key !== '-' ? q.key : 'Terlampir dalam Pembahasan'}</p>
+            <div class="pembahasan-box">
+                <strong>Pembahasan Lengkap:</strong><br>
+                ${this.parseFormat(q.explanation)}
+            </div>
+        `;
+        document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+
+    closeModal() {
+        document.getElementById('modal-overlay').classList.add('hidden');
+    }
+
+    // Sertifikat Generator (Print)
     downloadCertificate() {
-        alert("Sertifikat berhasil dibuat atas nama Anda dengan Nilai " + this.score + "! (Fitur cetak PDF dijalankan di sini)");
+        document.getElementById('cert-title').innerText = JUDUL_KUIS;
+        document.getElementById('cert-score').innerText = this.score;
         window.print();
     }
 }
 
-// Init App
+// Inisialisasi App
 const app = new QuizApp();
 </script>
 </body>
