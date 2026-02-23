@@ -3,265 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Interaktif - TKA SD KELAS 6</title>
+    <title>CBT Belajar Sukses</title>
     <style>
-        /* === TEMA & VARIABEL === */
         :root {
-            --royal-blue: #002366;
-            --gold: #FFD700;
-            --light-bg: #F4F7F6;
-            --white: #FFFFFF;
-            --text-dark: #333333;
-            --danger: #E63946;
-            --success: #2A9D8F;
+            --primary: #0F3D81; /* Royal Blue */
+            --accent: #D4AF37; /* Gold */
+            --bg-color: #f4f7f6;
+            --text-dark: #333;
+            --white: #ffffff;
+            --danger: #dc3545;
+            --success: #28a745;
+            --gray: #e9ecef;
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { margin: 0; background-color: var(--light-bg); color: var(--text-dark); }
+        body { margin: 0; background-color: var(--bg-color); color: var(--text-dark); }
+        
+        /* Utility */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
         
         /* Header */
-        header { background: var(--royal-blue); color: var(--white); padding: 15px 20px; text-align: center; border-bottom: 4px solid var(--gold); }
-        h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* Utilities */
-        .hidden { display: none !important; }
-        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-        .btn { background: var(--royal-blue); color: var(--gold); border: 2px solid var(--royal-blue); padding: 10px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; font-size: 1rem; }
-        .btn:hover { background: var(--gold); color: var(--royal-blue); border-color: var(--gold); }
-        .btn-outline { background: transparent; color: var(--royal-blue); border: 2px solid var(--royal-blue); }
-        .btn-outline:hover { background: var(--royal-blue); color: var(--white); }
-        
+        .app-header { background: var(--primary); color: var(--accent); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .app-header h1 { margin: 0; font-size: 1.2rem; }
+        .timer { font-size: 1.2rem; font-weight: bold; background: var(--white); color: var(--primary); padding: 5px 15px; border-radius: 20px; }
+
         /* Login Screen */
-        #login-screen { text-align: center; margin-top: 80px; background: var(--white); padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .pin-wrapper { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; }
-        #pin-input { padding: 12px; font-size: 1.2rem; text-align: center; letter-spacing: 2px; border: 2px solid var(--royal-blue); border-radius: 5px; width: 100%; max-width: 250px; }
-        #btn-toggle-pin { background: #eee; border: 1px solid #ccc; padding: 12px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        #btn-toggle-pin:hover { background: #ddd; }
-        
-        /* Quiz Screen */
-        #quiz-info { display: flex; justify-content: space-between; background: var(--gold); color: var(--royal-blue); padding: 12px 20px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; font-size: 1.1rem; }
-        .card { background: var(--white); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding-bottom: 20px; margin-bottom: 20px; }
+        .login-container { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--primary), #1a56b0); }
+        .login-card { background: var(--white); padding: 40px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-top: 5px solid var(--accent); }
+        .login-card h2 { color: var(--primary); margin-bottom: 20px; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid var(--gray); border-radius: 8px; outline: none; transition: border 0.3s; }
+        .input-group input:focus { border-color: var(--primary); }
+        .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--primary); font-weight: bold; user-select: none; }
+        .btn-start { background: var(--accent); color: var(--primary); border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: transform 0.2s; }
+        .btn-start:hover { transform: scale(1.05); }
+
+        /* Layout Main Exam */
+        .exam-layout { display: flex; height: calc(100vh - 60px); }
+        .main-content { flex: 1; overflow-y: auto; padding: 20px; position: relative; }
+        .sidebar { width: 300px; background: var(--white); border-left: 2px solid var(--gray); padding: 20px; overflow-y: auto; transition: transform 0.3s; }
+
+        /* Question Card */
+        .question-card { background: var(--white); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 80px; }
+        .question-header { background: var(--gray); padding: 15px 20px; font-weight: bold; color: var(--primary); display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); }
         
         /* Sticky Wacana */
-        .wacana-header { background: #E8F0FE; border-left: 5px solid var(--royal-blue); padding: 15px; position: sticky; top: 0; z-index: 10; font-size: 0.95rem; line-height: 1.6; border-bottom: 1px solid #ccc; max-height: 250px; overflow-y: auto; }
+        .wacana-box { position: sticky; top: 0; background: #fffbe6; padding: 15px 20px; border-bottom: 2px solid var(--accent); z-index: 10; font-size: 0.95rem; line-height: 1.6; max-height: 250px; overflow-y: auto; }
+        .wacana-title { font-weight: bold; color: var(--primary); margin-bottom: 10px; }
         
         .question-body { padding: 20px; font-size: 1.1rem; line-height: 1.6; }
-        .question-img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; display: block; }
-        
+        .img-question { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; }
+
         /* Options */
-        .options-container { display: flex; flex-direction: column; gap: 10px; padding: 0 20px; }
-        .option-label { display: flex; align-items: flex-start; padding: 12px; background: var(--light-bg); border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; line-height: 1.5; }
-        .option-label:hover { background: #e2e8f0; }
-        .option-label input { margin-top: 4px; margin-right: 15px; transform: scale(1.2); cursor: pointer; }
-        
-        /* True/False (BS) UI */
-        .bs-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .bs-table th, .bs-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        .bs-table th { background: var(--royal-blue); color: white; text-align: center; }
-        .bs-radio-group { display: flex; justify-content: space-evenly; }
-        .bs-radio-group label { cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        
-        /* Navigation */
-        .nav-buttons { display: flex; justify-content: space-between; padding: 20px; border-top: 1px solid #eee; margin-top: 20px; }
+        .option-label { display: block; padding: 12px 15px; margin-bottom: 10px; background: var(--gray); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .option-label:hover { background: #d3d9df; }
+        .option-label input { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
+        .option-label.selected { background: #e6f0ff; border-color: var(--primary); }
+
+        /* Table Benar Salah */
+        .bs-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .bs-table th, .bs-table td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+        .bs-table th { background: var(--primary); color: var(--white); }
+        .bs-table td:nth-child(2), .bs-table td:nth-child(3) { text-align: center; width: 100px; }
+        .bs-radio { transform: scale(1.3); cursor: pointer; }
+
+        /* Navigation Buttons */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); padding: 15px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; z-index: 50; }
+        .main-content .bottom-nav { right: 300px; } /* Adjust for sidebar */
+        .btn-nav { padding: 10px 25px; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .btn-prev { background: var(--gray); color: var(--text-dark); }
+        .btn-next { background: var(--primary); color: var(--white); }
+        .btn-submit { background: var(--danger); color: var(--white); }
+
+        /* CBT Grid Sidebar */
+        .grid-header { font-weight: bold; margin-bottom: 15px; color: var(--primary); text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .grid-container { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .grid-item { padding: 10px 0; text-align: center; border: 1px solid #ccc; border-radius: 6px; font-weight: bold; cursor: pointer; background: var(--white); transition: 0.2s; }
+        .grid-item:hover { background: var(--gray); }
+        .grid-item.answered { background: var(--success); color: var(--white); border-color: var(--success); }
+        .grid-item.active { background: var(--primary); color: var(--accent); border-color: var(--accent); }
+        .grid-item.flagged { border-bottom: 4px solid var(--accent); }
+
+        /* Mobile Drawer Toggle */
+        .mobile-drawer-btn { display: none; background: var(--accent); color: var(--primary); border: none; padding: 8px 15px; font-weight: bold; border-radius: 20px; cursor: pointer; }
         
         /* Result Screen */
-        #result-screen { text-align: center; padding: 40px 20px; background: var(--white); border-radius: 10px; }
-        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--royal-blue); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: bold; margin: 0 auto 20px; border: 5px solid var(--gold); }
-        .review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 30px; }
-        .review-btn { padding: 10px; text-align: center; font-weight: bold; border-radius: 5px; cursor: pointer; color: white; border: none; }
-        .review-btn.correct { background: var(--success); }
-        .review-btn.wrong { background: var(--danger); }
-        
-        /* Modal Popup Pembahasan */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: var(--white); padding: 25px; border-radius: 10px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--danger); font-weight: bold; }
-        .pembahasan-box { background: #e8f4f8; border-left: 5px solid var(--royal-blue); padding: 15px; margin-top: 15px; border-radius: 0 5px 5px 0; }
-        
-        /* Anti Cheat Overlay */
-        #warning-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(230, 57, 70, 0.95); color: white; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; text-align: center; padding: 20px; }
+        .result-container { padding: 40px; text-align: center; max-width: 600px; margin: 40px auto; background: var(--white); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 8px solid var(--accent); margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 48px; font-weight: bold; color: var(--primary); background: #fdfbf0; }
+        .review-box { margin-top: 30px; text-align: left; }
+        .review-item { padding: 15px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; }
+        .review-item.correct { border-left: 5px solid var(--success); }
+        .review-item.wrong { border-left: 5px solid var(--danger); }
+        .pembahasan { background: #eef2f7; padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 0.95rem; border: 1px dashed var(--primary); }
 
-        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #777; margin-top: 20px; }
+        /* Footer */
+        .footer { text-align: center; padding: 10px; background: var(--primary); color: var(--white); font-size: 0.8rem; position: fixed; bottom: 0; width: 100%; z-index: 1000; }
 
-        /* Print CSS for Certificate */
-        @media print {
-            body * { visibility: hidden; }
-            #sertifikat-print, #sertifikat-print * { visibility: visible; }
-            #sertifikat-print { position: absolute; left: 0; top: 0; width: 100%; text-align: center; }
+        @media (max-width: 768px) {
+            .exam-layout { flex-direction: column; }
+            .sidebar { position: fixed; top: 60px; right: -100%; height: calc(100vh - 60px); z-index: 900; box-shadow: -5px 0 15px rgba(0,0,0,0.1); width: 80%; max-width: 320px; }
+            .sidebar.open { right: 0; }
+            .main-content .bottom-nav { right: 0; }
+            .mobile-drawer-btn { display: block; }
+            .app-header h1 { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 id="app-title">KUIS INTERAKTIF</h1>
-    </header>
-
-    <div class="container">
-        <div id="login-screen">
-            <h2>Masukkan PIN Akses</h2>
-            <p>Silakan masukkan PIN ujian yang valid untuk memulai.</p>
-            <div class="pin-wrapper">
-                <input type="password" id="pin-input" placeholder="PIN Ujian" autocomplete="off">
-                <button type="button" id="btn-toggle-pin" onclick="app.togglePin()">Lihat</button>
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <h2 id="loginTitle">UJIAN CBT</h2>
+            <p>Masukkan PIN untuk memulai ujian.</p>
+            <div class="input-group">
+                <input type="password" id="pinInput" placeholder="Masukkan PIN Akses">
+                <span class="toggle-password" onclick="togglePin()">Lihat</span>
             </div>
-            <button class="btn" onclick="app.startKuis()">MULAI KUIS</button>
-            <p id="login-error" style="color: var(--danger); margin-top: 15px; font-weight: bold;" class="hidden">PIN Tidak Valid!</p>
+            <button class="btn-start" onclick="startExam()">MULAI UJIAN</button>
+            <p style="color:red; font-size: 14px; display:none;" id="pinError">PIN Salah!</p>
         </div>
+    </div>
 
-        <div id="quiz-screen" class="hidden">
-            <div id="quiz-info">
-                <span id="q-counter">Soal 1 / 30</span>
-                <span id="timer-display">70:00</span>
-            </div>
-            
-            <div class="card" id="question-card">
+    <div id="appScreen" class="hidden">
+        <header class="app-header">
+            <h1 id="appTitle">CBT SD</h1>
+            <div class="timer" id="timerDisplay">00:00:00</div>
+            <button class="mobile-drawer-btn" onclick="toggleSidebar()">Grid Soal</button>
+        </header>
+
+        <div class="exam-layout">
+            <main class="main-content" id="mainContent">
+                <div class="question-card" id="questionCard">
+                    </div>
+                <div class="bottom-nav">
+                    <button class="btn-nav btn-prev" id="btnPrev" onclick="navigate(-1)">&#9664; Soal Sebelumnya</button>
+                    <button class="btn-nav btn-next" id="btnNext" onclick="navigate(1)">Soal Selanjutnya &#9654;</button>
+                    <button class="btn-nav btn-submit hidden" id="btnSubmit" onclick="confirmSubmit()">Selesai Ujian</button>
                 </div>
+            </main>
 
-            <div class="nav-buttons">
-                <button class="btn btn-outline" id="btn-prev" onclick="app.prevQuestion()">&#8592; Sebelumnya</button>
-                <button class="btn" id="btn-next" onclick="app.nextQuestion()">Selanjutnya &#8594;</button>
-                <button class="btn hidden" id="btn-submit" onclick="app.finishQuiz()">Selesai Kuis</button>
-            </div>
-        </div>
-
-        <div id="result-screen" class="hidden">
-            <h2>Ujian Telah Selesai</h2>
-            <div class="score-circle" id="final-score">0</div>
-            <h3 id="status-kelulusan"></h3>
-            
-            <div style="margin-top: 20px;">
-                <button class="btn hidden" id="btn-cert" onclick="app.downloadCertificate()">Unduh Sertifikat</button>
-            </div>
-
-            <h3 style="margin-top: 40px;">Review Jawaban (Klik Nomor Soal)</h3>
-            <p style="font-size: 0.9rem; color: #666;">Hijau = Benar | Merah = Salah</p>
-            <div id="review-grid" class="review-grid"></div>
+            <aside class="sidebar" id="sidebar">
+                <div class="grid-header">Navigasi Soal</div>
+                <div class="grid-container" id="cbtGrid">
+                    </div>
+            </aside>
         </div>
     </div>
 
-    <div id="modal-overlay" class="hidden">
-        <div class="modal-content">
-            <span class="modal-close" onclick="app.closeModal()">&times;</span>
-            <h3>Review Pembahasan</h3>
-            <div id="modal-body" style="margin-top: 15px; line-height: 1.6;"></div>
+    <div id="resultScreen" class="hidden" style="min-height: 100vh; background: var(--bg-color); padding-bottom: 50px;">
+        <div class="app-header" style="justify-content: center;">
+            <h1>HASIL UJIAN</h1>
+        </div>
+        <div class="result-container">
+            <h2 style="color: var(--primary);">NILAI ANDA</h2>
+            <div class="score-circle" id="finalScore">0</div>
+            <p id="resultMessage" style="font-weight: bold; margin-bottom: 20px;"></p>
+            <button class="btn-nav btn-next" onclick="showReview()" style="margin-bottom: 10px; width: 100%;">Lihat Pembahasan</button>
+            <button class="btn-nav btn-submit hidden" id="btnSertifikat" onclick="generateSertifikat()" style="width: 100%;">Unduh Sertifikat</button>
+            <div id="reviewContainer" class="review-box hidden"></div>
         </div>
     </div>
 
-    <div id="warning-overlay" class="hidden">
-        <h1 style="font-size: 3rem; margin-bottom: 10px;">PERINGATAN!</h1>
-        <p style="font-size: 1.2rem;">Anda terdeteksi meninggalkan halaman atau mengganti tab.</p>
-        <p style="font-size: 1.5rem; font-weight: bold; margin: 20px 0;">Peringatan ke-<span id="warn-count">0</span> dari 3.</p>
-        <p>Jika mencapai 3 kali, Anda akan otomatis didiskualifikasi dan nilai langsung dihitung.</p>
-        <button class="btn" onclick="app.closeWarning()" style="margin-top:30px; background:white; color:var(--danger)">Saya Mengerti, Kembali ke Ujian</button>
-    </div>
-
-    <div id="sertifikat-print" class="hidden" style="padding: 50px; border: 10px solid var(--gold); border-radius: 15px; font-family: serif; background: white;">
-        <h1 style="color: var(--royal-blue); font-size: 3rem; margin-bottom: 5px;">SERTIFIKAT PENGHARGAAN</h1>
-        <p style="font-size: 1.5rem; margin-bottom: 20px;">Diberikan atas kelulusan pada Kuis:</p>
-        <h2 id="cert-title" style="font-size: 2rem;"></h2>
-        <p style="font-size: 1.5rem; margin-top: 30px;">Dengan Nilai Akhir:</p>
-        <h1 id="cert-score" style="font-size: 5rem; color: var(--gold); margin: 10px 0;"></h1>
-        <p style="font-style: italic; margin-top: 40px; font-size: 1.2rem;">"Belajar Sukses!"</p>
-    </div>
-
-    <footer>
-        &copy; 2026 Copyright "Belajar Sukses". All Rights Reserved.
+    <footer class="footer hidden" id="appFooter">
+        &copy; 2026 Belajar Sukses - Hak Cipta Dilindungi
     </footer>
 
-<script>
-/**
- * 4. KONFIGURASI DATA (Sesuai Permintaan)
- */
-const JUDUL_KUIS = "TKA SD KELAS 6";
-const PIN_AKSES = "SUKSESBELAJAR100%";
-const WAKTU_MENIT = 70;
-const TARGET_TOTAL_SOAL = 30;
+    <script>
+        // ==========================================
+        // KONFIGURASI DATA UTAMA
+        // ==========================================
+        const JUDUL_KUIS = "TKA SD KELAS 6";
+        const PIN_AKSES = "SUKSESBELAJAR100%";
+        const WAKTU_MENIT = 70;
+        const TARGET_TOTAL_SOAL = 30;
 
-// Update UI
-document.getElementById('app-title').innerText = JUDUL_KUIS;
-document.title = "Kuis - " + JUDUL_KUIS;
+        // ==========================================
+        // DATA RAW INJECTION (DARI PROMPT)
+        // ==========================================
+        const RAW_SINGLE = `
+[Tipe: PG] Di sebuah ekosistem laut yang asri, terdapat terumbu karang yang menjadi rumah bagi berbagai **biota**. Apa makna istilah biologi yang dicetak tebal tersebut? | Sekumpulan tumbuhan laut ~ Seluruh flora dan fauna di wilayah tertentu ~ Jenis ikan hias yang langka ~ Batuan yang ada di dasar laut | B | Biota merujuk pada keseluruhan kehidupan (flora dan fauna) di suatu wilayah. 
+[Tipe: PG] Perjalanan dari Jakarta ke Bandung kini lebih cepat berkat adanya kereta cepat. Transportasi **modern** ini sangat diminati masyarakat. Sinonim kata "*modern*" pada kalimat tersebut adalah... | Canggih ~ Lawas ~ Tradisional ~ Terkenal | A | Modern dalam konteks transportasi merujuk pada teknologi yang canggih atau terbaru. 
+[Tipe: PG] Pak Budi adalah **tangan kanan** direktur di perusahaan itu. Makna ungkapan "**tangan kanan**" adalah... | Orang yang kuat ~ Orang kepercayaan ~ Anggota keluarga ~ Orang yang rajin | B | Tangan kanan adalah idiom untuk orang yang sangat dipercaya oleh atasan. 
+[Tipe: BS] Tentukan kebenaran penggunaan kata baku berikut ini: | Apotek (Benar) ~ Ijin (Salah) ~ Jadual (Salah) ~ Kualitas (Benar) | - | Kata baku yang benar adalah apotek, izin, jadwal, dan kualitas. 
+[Tipe: PG] Perhatikan kalimat acak berikut: (1) membaca (2) sedang (3) di (4) perpustakaan (5) Budi (6) buku. Susunan kalimat efektif yang tepat adalah... | 5-2-1-6-3-4 ~ 5-2-6-1-3-4 ~ 1-6-2-5-3-4 ~ 5-1-6-2-3-4 | A | Susunan subjek (Budi), predikat (sedang membaca), objek (buku), dan keterangan (di perpustakaan). 
+[Tipe: PG] [IMG: https://pixabay.com/images/download/sjb3949-steam-train-502120_1920.jpg] Kereta api ini menggunakan bahan bakar kayu atau batu bara untuk menggerakkan mesin uapnya. Berdasarkan deskripsi tersebut, alat transportasi yang dimaksud adalah... | Kereta listrik ~ Kereta uap ~ Kereta rel diesel ~ Kereta magnet | B | Deskripsi bahan bakar kayu/batu bara dan mesin uap merujuk pada kereta uap. 
+[Tipe: PG] [IMG: https://i.ibb.co.com/kgjNZPp8/Gemini-Generated-Image-ic01gdic01gdic01.png] Tokoh pahlawan ini dikenal dengan sorban di kepala dan pakaian jubah putih saat memimpin perang di Jawa. Siapakah tokoh tersebut? | Ir. Soekarno ~ Pangeran Diponegoro ~ Sultan Hasanuddin ~ Tuanku Imam Bonjol | B | Atribut sorban dan jubah putih identik dengan Pangeran Diponegoro.
+[Tipe: PG] Bacalah teks berikut: "Pemerintah Kota Bandung menggelar festival seni budaya pada hari Minggu. Acara ini dihadiri oleh ribuan warga yang antusias melihat berbagai pertunjukan tradisional." Ringkasan yang paling tepat dalam satu kalimat efektif adalah... | Festival seni budaya di Bandung dihadiri ribuan warga. ~ Pemerintah Kota Bandung suka menonton pertunjukan tradisional. ~ Warga sangat antusias menggelar festival pada hari Minggu. ~ Acara tradisional banyak disukai oleh masyarakat luas. | A | Ringkasan merangkum inti informasi dari teks secara padat dan jelas.
+[Tipe: PG] [IMG: https://i.ibb.co.com/BK6f4ymT/Gemini-Generated-Image-igp8vjigp8vjigp8.png] Urutan langkah menyalakan televisi yang benar adalah: (1) Tekan tombol power di remote, (2) Colokkan kabel ke stopkontak, (3) Pilih saluran yang diinginkan. Susunan gambar panduan yang paling tepat adalah... | 2 - 1 - 3 ~ 1 - 2 - 3 ~ 3 - 2 - 1 ~ 2 - 3 - 1 | A | Logika menyalakan alat elektronik: hubungkan ke listrik dahulu, nyalakan mesin, baru operasikan fungsinya.
+[Tipe: PG] Susunlah paragraf acak berikut menjadi cerita yang padu! (1) Akhirnya, ia berhasil menemukan sumber air. (2) Si Kancil merasa sangat kehausan setelah berlari seharian. (3) Dengan cepat ia meminum air itu hingga puas. (4) Ia pun berjalan menyusuri hutan untuk mencari sungai. | 2 - 4 - 1 - 3 ~ 2 - 1 - 4 - 3 ~ 4 - 2 - 1 - 3 ~ 1 - 2 - 3 - 4 | A | Alur cerita yang logis: Kancil kehausan, lalu mencari sungai, menemukan sumber air, lalu meminumnya.
+[Tipe: BS] Perhatikan resep es jeruk berikut: "Siapkan 2 buah jeruk, 2 sendok gula, air es, gelas, dan sendok pengaduk." Tentukan kebenaran pernyataan pengelompokan berikut: | Gelas dan sendok pengaduk termasuk kelompok bahan (Salah) ~ Jeruk dan gula termasuk kelompok bahan (Benar) ~ Air es termasuk kelompok alat (Salah) | - | Jeruk, gula, dan air es adalah bahan baku. Sedangkan gelas dan sendok pengaduk adalah alat.
+[Tipe: PG] Teks wawancara: Dina: "Sejak kapan Bapak berjualan bakso?" Pak Ali: "Saya berjualan sejak tahun 2010, Nak." Susunan ulang menjadi teks narasi laporan wawancara yang tepat adalah... | Dina bertanya kepada Pak Ali sejak kapan ia berjualan bakso, dan Pak Ali menjawab bahwa ia sudah berjualan sejak tahun 2010. ~ Pak Ali bertanya kepada Dina kapan ia makan bakso di tahun 2010. ~ Dina berjualan bakso sejak tahun 2010 bersama Pak Ali. ~ Pak Ali menyuruh Dina berjualan bakso sejak tahun 2010. | A | Narasi wawancara harus mengubah kalimat langsung menjadi kalimat tidak langsung tanpa mengubah maknanya.
+[Tipe: PG] [IMG: https://i.ibb.co.com/rK3TWz8j/Gemini-Generated-Image-t220zpt220zpt220.png] Berdasarkan poster tersebut, kapan tanggal batas pendaftaran peserta? | 15 Agustus 2026 ~ 10 Agustus 2026 ~ 17 Agustus 2026 ~ 20 Agustus 2026 | A | Jawaban ditemukan secara tersurat pada teks di dalam poster.
+[Tipe: PG] [IMG: https://i.ibb.co.com/NdXc7vH2/Gemini-Generated-Image-oihprooihprooihp.png] Berdasarkan tabel tersebut, jam keberangkatan Kereta Api Argo Parahyangan tujuan Bandung adalah pukul... | 08.00 WIB ~ 09.30 WIB ~ 10.15 WIB ~ 12.00 WIB | A | Informasi jam dapat dibaca secara langsung pada kolom dan baris yang sesuai di tabel jadwal kereta.
+[Tipe: PG] [IMG: https://i.ibb.co.com/WvWhVY45/Gemini-Generated-Image-jbitdfjbitdfjbit.png] Berdasarkan label obat tersebut, aturan pakai atau dosis yang dianjurkan untuk anak-anak adalah... | 1 sendok teh, 3 kali sehari ~ 2 sendok teh, 3 kali sehari ~ 1 sendok makan, 2 kali sehari ~ Setengah sendok teh, 3 kali sehari | A | Informasi dosis anak tersurat dengan jelas pada label kemasan obat.
+[Tipe: PG] Teks 1: Susu kedelai sangat baik untuk pencernaan karena mengandung banyak serat alami. Teks 2: Selain kaya protein nabati, serat tinggi dalam tahu kedelai membantu melancarkan sistem pencernaan. Kesimpulan persamaan isi kedua teks tersebut adalah... | Manfaat olahan kedelai bagi pencernaan ~ Cara memproduksi aneka olahan kedelai ~ Harga produk kedelai di pasaran ~ Kedelai sebagai bahan makanan pokok | A | Kedua teks tersebut sama-sama membahas tentang manfaat kedelai untuk sistem pencernaan manusia.
+[Tipe: PG] **Bacalah percakapan berikut!** Andi: "Besok kita kumpul jam berapa untuk mengerjakan mading?" Budi: "Jam dua siang saja di rumahku." Andi: "Oke, jangan lupa bawa karton dan spidol ya." Kesimpulan topik pembicaraan mereka adalah... | Persiapan tugas kelompok membuat mading ~ Rencana bermain siang hari di rumah Budi ~ Jadwal pelajaran kesenian di sekolah ~ Membeli alat tulis berupa karton dan spidol | A | Dialog tersebut berfokus pada perencanaan dan persiapan mengerjakan tugas mading bersama.
+[Tipe: PG] Laporan wawancara: Reporter: "Berapa banyak hasil panen yang Bapak dapatkan musim ini?" Narasumber: "Alhamdulillah, karena cuaca mendukung, saya bisa memanen hingga lima ton gabah." Berdasarkan wawancara di atas, profesi narasumber tersebut adalah... | Petani ~ Nelayan ~ Pedagang ~ Peternak | A | Istilah "panen" dan "gabah" identik dengan mata pencaharian seorang petani.
+[Tipe: PG] **Bacalah penggalan puisi berikut!** "Buku... engkaulah teman setiaku. Dalam lembaranmu kutemukan dunia baru. Tak akan lelah aku menyusuri setiap katamu." Pesan penyair yang ingin disampaikan kepada pembaca adalah... | Ajakan untuk gemar membaca buku yang kaya manfaat ~ Buku sangat mahal sehingga harus dijaga ~ Buku mudah rusak jika tidak dirawat dengan baik ~ Menulis sebuah buku itu butuh perjuangan | A | Puisi tersebut berisi kekaguman terhadap buku yang dapat membuka wawasan ("dunia baru").
+[Tipe: PG] **Bacalah penggalan teks berikut!** "Matahari mulai condong ke ufuk barat dan burung-burung kembali ke sarangnya. Suasana langit perlahan berubah warna menjadi jingga keunguan. Anak-anak yang sedang bermain layangan di lapangan segera menggulung benang mereka." Kesimpulan perpindahan latar waktu pada cerita tersebut adalah... | Pagi beralih ke siang ~ Siang beralih ke sore ~ Sore beralih ke malam ~ Malam beralih ke pagi | C | Teks mendeskripsikan ciri-ciri waktu sore hari menjelang petang.
+[Tipe: PG] **Bacalah awal cerita berikut!** "Rino sangat gemar mengoleksi mainan robot. Suatu hari saat berjalan pulang sekolah, ia melihat seorang anak kecil menangis karena mainan robotnya rusak terlindas sepeda." Prediksi kelanjutan cerita yang paling logis adalah... | Rino membiarkan anak itu menangis di jalan ~ Rino ikut menangis bersama anak tersebut ~ Rino menghibur anak itu dan menawarkan bantuan untuk memperbaikinya ~ Rino mengambil mainan rusak itu untuk dijual kembali | C | Kelanjutan logis untuk tokoh yang menyukai mainan adalah menunjukkan empati dan membantu memperbaikinya.
+[Tipe: PG] **Bacalah kalimat berikut!** "Biji kedelai rebus yang telah dicampur ragi dibungkus rapat menggunakan daun pisang. Setelah didiamkan selama dua hari di tempat bersuhu hangat, kedelai yang awalnya terpisah-pisah kini mengalami perubahan fermentasi." Kesimpulan perubahan tekstur kedelai menjadi tempe adalah... | Menjadi cair dan berair ~ Menjadi padat dan saling menyatu ~ Menjadi serbuk sangat halus ~ Menjadi sangat keras seperti batu | B | Proses fermentasi tempe membuat biji kedelai terikat oleh jamur sehingga teksturnya menjadi padat.
+[Tipe: BS] Tentukan kebenaran pernyataan berdasarkan fenomena berikut: "Setiap selesai libur hari raya, banyak penduduk desa yang memutuskan pindah ke kota besar untuk mencari pekerjaan." | Hal ini mengakibatkan kepadatan penduduk kota menurun drastis (Salah) ~ Fenomena ini memicu peningkatan kepadatan penduduk di perkotaan (Benar) | - | Urbanisasi atau perpindahan penduduk dari desa ke kota selalu menyebabkan kepadatan penduduk kota bertambah.
+[Tipe: PG] Pak Surya dikenal sebagai **tangan kanan** pemimpin perusahaan karena kedisiplinan dan kejujurannya. Makna ungkapan yang dicetak tebal adalah... | Seseorang yang sangat kuat secara fisik ~ Orang kepercayaan yang sangat diandalkan ~ Pemimpin kelompok yang kejam ~ Anggota keluarga dari seorang pemimpin | B | Tangan kanan adalah idiom untuk menyebut orang kepercayaan.
+[Tipe: PG] Perhatikan penggalan puisi berikut: "Saat sang **dewi malam** muncul menampakkan diri, cahayanya yang lembut menerangi jalanan desa yang tadinya gelap gulita." Makna kias dari kata yang dicetak tebal adalah... | Bintang kejora ~ Bulan purnama ~ Lampu jalanan ~ Matahari senja | B | Dewi malam adalah kiasan atau majas yang merujuk pada bulan.
+[Tipe: PG] Bacalah cerita singkat berikut: "Musang telah menolong Ular yang terjepit batu besar. Namun keesokan harinya Ular justru berbalik menyerang dan memakan anak-anak Musang. Benarlah peribahasa **air susu dibalas air tuba**." Makna peribahasa tersebut adalah... | Kebaikan yang dibalas dengan kebaikan serupa ~ Kebaikan yang dibalas dengan suatu kejahatan ~ Kejahatan yang dibalas dengan kejahatan yang setimpal ~ Saling tolong menolong sesama teman di hutan | B | Peribahasa tersebut bermakna perbuatan baik yang dibalas dengan perbuatan buruk atau jahat.
+[Tipe: PG] Di dalam pidatonya bupati berpesan: "Pemuda adalah **tulang punggung negara**. Masa depan dan kemajuan bangsa ini ada di tangan kalian." Makna metafora tersebut adalah... | Pemuda adalah tumpuan kekuatan atau andalan suatu bangsa ~ Pemuda harus bekerja keras memikul barang setiap hari ~ Pemuda memiliki struktur tulang tubuh yang paling kuat ~ Pemuda selalu membawa beban yang sangat berat | A | Tulang punggung negara bermakna penopang utama atau kekuatan utama bangsa.
+[Tipe: PG] **Bacalah kalimat humor berikut!** "Wah tulisanmu bagus sekali seperti sandi rumput sampai-sampai aku sama sekali tidak bisa membacanya." Makna tersirat dari kalimat sindiran tersebut adalah... | Memuji tulisan yang rapi dan indah ~ Menyindir tulisan yang sangat berantakan dan sulit dibaca ~ Mengajak teman belajar membuat sandi rumput ~ Menyatakan kekaguman pada bentuk huruf | B | Kalimat tersebut menggunakan majas ironi untuk menyindir keburukan dengan berpura-pura memuji.
+[Tipe: PG] Perhatikan pantun berikut: "Jalan-jalan ke kota Blitar ~ Jangan lupa membeli sukun ~ Kalau kamu ingin pintar ~ Belajarlah dengan tekun". Makna isi pantun tersebut terdapat pada baris 3 dan 4 yaitu... | Mengajak jalan-jalan ke Blitar untuk wisata ~ Menyuruh membeli buah sukun sebagai oleh-oleh ~ Nasihat agar rajin belajar apabila ingin menjadi pandai ~ Larangan bermain di luar rumah saat sedang belajar | C | Baris 3 dan 4 pada pantun merupakan isi yang mengandung pesan atau amanat.
+[Tipe: PG] Mendengar sepedanya dirusak dengan sengaja oleh temannya, wajah Anton memerah dan ia pun **naik pitam**. Makna idiom tersebut adalah... | Menjadi sangat bahagia ~ Menjadi sangat marah ~ Jatuh sakit dan pusing ~ Merasa sangat sedih | B | Naik pitam adalah ungkapan untuk menggambarkan seseorang yang sangat marah.
+[Tipe: PG] Teks biografi: "Ki Hajar Dewantara mendirikan sekolah Taman Siswa untuk memberikan kesempatan pendidikan bagi rakyat pribumi. Berkat dedikasinya tersebut beliau mendapat julukan Bapak Pendidikan Nasional." Makna julukan tersebut adalah... | Orang yang pertama kali membuat bangunan sekolah ~ Tokoh pelopor dan perintis kemajuan pendidikan bangsa ~ Pejabat yang menyumbangkan banyak uang untuk sekolah ~ Guru pertama yang mengajar di seluruh Indonesia | B | Julukan tersebut diberikan sebagai penghargaan atas jasa besarnya memelopori pendidikan di Indonesia.
+[Tipe: PG] Di tepi pantai sore itu, **angin berbisik** lembut di telingaku membawa aroma garam laut yang khas. Makna majas personifikasi pada teks tersebut adalah... | Angin bisa berbicara secara langsung layaknya manusia ~ Suara embusan angin yang terdengar sangat pelan dan lembut ~ Seseorang berbisik membicarakan angin laut ~ Angin yang bertiup sangat kencang merusak pohon | B | Majas personifikasi mengibaratkan angin (benda mati) seolah berbisik, yang maknanya adalah embusan angin yang pelan.
+[Tipe: PG] Nilai keteladanan dari cerita fiksi: "Rina menemukan dompet penuh uang di jalan dan langsung menyerahkannya ke kantor polisi." Tindakan dalam kehidupan sehari-hari yang sesuai dengan relevansi nilai kejujuran cerita tersebut adalah... | Mengerjakan soal ujian sendiri tanpa menyontek catatan ~ Membantu ibu menyapu halaman rumah setiap sore ~ Berbagi bekal makanan dengan teman satu bangku ~ Datang tepat waktu ke sekolah tanpa pernah terlambat | A | Tindakan mengembalikan dompet mencerminkan kejujuran, yang ekuivalen dengan tidak menyontek saat ujian.
+[Tipe: PG] Teks kampanye kesehatan: "Membiasakan diri menyisihkan uang saku untuk menabung di celengan sangat bermanfaat. Saat kita butuh membeli buku tulis baru, kita tidak perlu lagi meminta uang kepada orang tua." Evaluasi efektivitas cara menabung tersebut bagi seorang pelajar adalah... | Sangat efektif karena melatih kemandirian finansial pelajar sejak dini ~ Kurang efektif karena pelajar belum bekerja dan tidak punya gaji ~ Tidak efektif karena jumlah uang yang disisihkan pasti sangat sedikit ~ Sangat efektif karena tujuannya hanya untuk membeli mainan mahal | A | Menabung uang saku sangat efektif untuk mendidik kemandirian dan manajemen uang anak sekolah.
+[Tipe: PGK] **Bacalah kutipan cerita fantasi ini!** "Nenek Sihir mengusap gagang sapunya. Tiba-tiba sapu itu melesat menembus awan dan berbicara kepada burung-burung yang lewat." Peristiwa fiktif yang tidak mungkin terjadi di dunia nyata berdasarkan teks tersebut adalah... | Benda mati seperti sapu bisa terbang ~ Sapu kayu bisa berbicara ~ Burung-burung terbang di langit bebas ~ Awan berada tinggi di angkasa | A, B | Peristiwa tak masuk akal di dunia nyata adalah sapu yang bisa terbang dan sapu yang bisa berbicara.
+[Tipe: BS] [IMG: https://i.ibb.co.com/Dg7CzrHB/Gemini-Generated-Image-2aysx42aysx42ays.png] Teks di dalam buku tersebut mengisahkan tentang petualangan luar angkasa seorang astronot yang mendarat di planet Mars. Tentukan penilaian kesesuaian ilustrasi sampul tersebut: | Ilustrasi sampul sangat sesuai dengan isi cerita karena gambarnya cerah dan menarik perhatian (Salah) ~ Ilustrasi sampul sama sekali tidak sesuai karena gambar olahraga tidak mencerminkan tema petualangan luar angkasa (Benar) | - | Sampul buku harus merepresentasikan gagasan atau tema utama isi buku (astronomi/luar angkasa), bukan sepak bola.
+[Tipe: PG] Teks Surat Pembaca: "Akhir-akhir ini, tumpukan sampah di depan gerbang sekolah kita semakin menggunung. Bau busuknya sangat mengganggu konsentrasi siswa saat belajar di kelas yang dekat dengan gerbang." Kalimat saran logis yang paling tepat untuk menanggapi surat pembaca tersebut adalah... | Sebaiknya kita membakar tumpukan sampah tersebut setiap pagi agar cepat habis ~ Sebaiknya pihak sekolah menyediakan tempat sampah penampungan tertutup dan mengatur jadwal pengangkutan sampah secara rutin ~ Sebaiknya kita memindahkan saja sampah-sampah itu ke depan pekarangan rumah warga sekitar ~ Biarkan saja karena nanti akan diangkut sendiri oleh tukang rongsokan yang lewat | B | Saran B adalah solusi paling efektif, sistematis, dan ramah lingkungan tanpa memindahkan masalah ke tempat lain.
+[Tipe: PG] Teks ulasan buku anak: "Buku fabel ini sangat jelek dan membosankan. Saya tidak suka sama sekali karena kebetulan sampulnya berwarna hijau, sedangkan warna kesukaan saya adalah merah." Penilaian terhadap tingkat objektifitas ulasan tersebut adalah... | Ulasan tersebut sangat objektif karena memuat kejujuran pendapat pribadi dari pembaca ~ Ulasan tersebut tidak objektif karena penilaian hanya didasarkan pada selera warna personal pengulas, bukan berdasarkan kualitas isi buku ~ Ulasan tersebut sudah objektif karena menyajikan kritik yang tajam bagi penulis ~ Ulasan tersebut objektif karena warna sampul adalah satu-satunya hal penting dari buku | B | Ulasan yang baik dan objektif harus didasari pada bukti kutipan isi buku (alur, penokohan, pesan), bukan sekadar selera visual sepihak.
+[Tipe: PG] **Bacalah cerita jenaka berikut!** Di tengah keheningan kelas saat ujian matematika yang menegangkan, perut Doni tiba-tiba berbunyi sangat nyaring seperti paduan suara nyanyian katak di sawah, "Kruuuk... kruk!" Sontak seluruh teman sekelas menoleh kepadanya. Doni menutupi wajahnya dengan kertas ujian sambil tersenyum malu. Bagian teks manakah yang paling menciptakan kesan lucu? | Di tengah keheningan kelas saat ujian matematika ~ Sontak seluruh teman sekelas menoleh kepadanya ~ Perut Doni berbunyi nyaring seperti paduan suara nyanyian katak di sawah ~ Doni menutupi wajahnya dengan kertas ujian | C | Majas hiperbola (paduan suara nyanyian katak) di tengah situasi hening dan serius menciptakan kontras yang memancing tawa.
+[Tipe: PG] **Bacalah kutipan cerita berikut**: Rina berlari sekencang-kencangnya menembus hujan menuju stasiun. Sayangnya, kereta terakhir baru saja melaju meninggalkannya. Malam itu stasiun mulai sepi, dan Rina hanya bisa berdiri kedinginan menatap rel kereta yang kosong di kejauhan. Menyimpulkan ending cerita yang menggantung tersebut, perasaan tokoh Rina di akhir cerita adalah... | Sangat gembira karena bisa bermain air hujan di stasiun ~ Merasa amat kecewa, putus asa, dan sedih karena tertinggal kereta ~ Merasa lega karena bisa pulang berjalan kaki ~ Sangat marah dan ingin merusak fasilitas stasiun | B | Situasi tertinggal angkutan terakhir di malam hari yang hujan tentu menimbulkan kesedihan dan keputusasaan mendalam.
+[Tipe: PG] Teks Naskah Drama: Raja: (Berdiri mendadak dari singgasananya sambil menunjuk prajurit dengan mata melotot) "Berapa kali harus kukatakan padamu?! Jangan biarkan pengkhianat itu lolos dari penjara ini!" Nada bicara yang paling tepat digunakan oleh pemeran Raja saat mengucapkan dialog tersebut adalah... | Nada tinggi, tegas, dan membentak penuh kemarahan ~ Nada lembut, pelan, dan penuh kasih sayang ~ Nada berbisik lirih seperti orang ketakutan ~ Nada datar dan mengantuk tanpa ekspresi | A | Tanda seru ganda, huruf kapital tersembunyi, dan gestur "mata melotot" merupakan indikasi kemarahan memuncak.
+[Tipe: PG] Kutipan Cerita Horor Anak: "Malam itu hujan turun rintik-rintik. Lampu ruang tamu tiba-tiba padam mendadak. Andi meraba-raba mencari lilin dalam kegelapan. Tiba-tiba, terdengar suara aneh langkah kaki yang terseret pelan mendekati pintu kamarnya. Sreeek... sreeek... Jantung Andi berdegup sangat kencang." Bagian narasi manakah yang memegang peran paling kuat menciptakan suasana tegang? | Malam itu hujan turun rintik-rintik di luar rumah ~ Andi meraba-raba mencari lilin di atas meja ~ Terdengar suara aneh langkah kaki yang terseret pelan mendekati kamarnya ~ Lampu ruang tamu tiba-tiba padam mendadak | C | Kemunculan unsur misteri yang mendekati karakter (suara langkah terseret) adalah elemen puncak pembangun ketegangan.
+[Tipe: PG] Lirik lagu nasional: "Maju tak gentar, membela yang benar! Maju tak gentar, hak kita diserang! Maju serentak, mengusir penyerang!" Kesimpulan respons emosional berupa semangat yang ingin ditularkan oleh penulis lagu tersebut kepada generasi muda adalah... | Semangat untuk menyerah saja pada keadaan yang sulit ~ Semangat keberanian luar biasa dan pantang mundur dalam membela kebenaran ~ Semangat bersantai-santai menikmati kemerdekaan di rumah ~ Semangat untuk bersembunyi dari para penyerang | B | Diksi "maju tak gentar" (tidak takut) bertujuan membakar semangat heroisme dan keberanian patriotik.
+[Tipe: PG] Teks cerita misteri: "Keesokan paginya, kotak kayu rahasia di atas meja kakek ternyata telah terbuka gemboknya. Namun, isinya bukanlah tumpukan koin emas seperti yang kuduga selama ini, melainkan secarik peta tua kumal dengan tanda silang merah berdarah di ujungnya." Kalimat manakah yang paling memancing rasa penasaran pembaca dari kutipan tersebut? | Keesokan paginya, kotak kayu rahasia di atas meja kakek telah terbuka ~ Kotak kayu misterius itu berada di atas meja ~ Isinya bukanlah tumpukan koin emas seperti yang kuduga ~ Terdapat secarik peta tua kumal dengan tanda silang merah berdarah di ujungnya | D | Peta yang memiliki tanda spesifik (silang merah) memberikan petunjuk adanya teka-teki baru, membuat pembaca bertanya-tanya arah petualangan selanjutnya.
+[Tipe: PG] Dialog Perpisahan Kelas: Siti: "Jaga dirimu baik-baik di SMP seberang pulau sana, Lani. Jangan lupa kirimi aku pesan setiap minggu, ya." Lani: "(Menggenggam tangan Siti) Tentu saja, Siti. Kamu adalah tempat terbaikku berbagi rahasia selama 6 tahun ini. Aku pasti akan sangat merindukanmu." Kesimpulan kedalaman hubungan antartokoh berdasarkan dialog tersebut adalah... | Mereka hanyalah teman sekelas biasa yang kebetulan duduk sebangku ~ Mereka memiliki ikatan persahabatan sejati yang sangat kuat dan emosional ~ Mereka adalah saudara kandung yang akan dipisahkan ~ Mereka baru saja saling mengenal saat kelulusan | B | Dialog "tempat terbaikku berbagi rahasia" dan gestur genggaman tangan mencerminkan tingkat kepercayaan dan persahabatan yang sangat dalam.
+[Tipe: PG] Sebuah cerita inspiratif menceritakan perjuangan tokoh penemu, Thomas Alva Edison, yang dikabarkan gagal ribuan kali sebelum akhirnya berhasil menemukan bola lampu yang menyala. Kutipan pernyataan manakah dari tokoh tersebut yang paling memotivasi semangat pantang menyerah pelajar? | "Lampu adalah penemuan yang sangat mahal pembuatannya pada zamanku." ~ "Saya sebenarnya tidak gagal, saya hanya menemukan 10.000 cara yang ternyata tidak berhasil." ~ "Saya selalu bekerja keras di sebuah laboratorium kecil yang sangat gelap setiap malam." ~ "Dibutuhkan banyak sekali bahan baku kaca untuk membuat bola lampu buatan saya." | B | Membingkai kegagalan sebagai "cara yang tidak berhasil" adalah pola pikir (mindset) positif yang luar biasa memotivasi pembaca untuk tidak menyerah.
+[Tipe: PG] Di dalam ekosistem laut yang sehat terdapat beragam biota laut yang hidup saling bergantungan. Makna istilah biologi yang dicetak tebal pada kalimat tersebut adalah... | Seluruh flora dan fauna di suatu wilayah ~ Kumpulan tumbuhan laut yang hidup di dasar karang ~ Jenis ikan pemakan plankton yang ukurannya kecil ~ Bebatuan karang tempat ikan bersembunyi | A | Biota adalah keseluruhan kehidupan flora dan fauna yang terdapat di dalam suatu daerah atau ekosistem tertentu.
+[Tipe: PG] Cuaca di padang rumput itu sangat terik pada siang hari sehingga tanahnya menjadi kering. Antonim dari kata sifat yang mendeskripsikan kondisi alam tersebut adalah... | Panas ~ Teduh ~ Cerah ~ Gersang | B | Antonim atau lawan kata dari terik (sangat panas) adalah teduh.
+[Tipe: PG] Keindahan pemandangan Pantai Kuta di sore hari sungguh *menawan hati* setiap turis asing yang datang. Makna konotatif positif dari frasa bercetak miring tersebut adalah... | Sangat indah dan menarik perhatian ~ Sangat luas dan cukup berbahaya ~ Sangat sepi dan menenangkan ~ Sangat ramai dan penuh sesak | A | Frasa 'menawan hati' memiliki konotasi positif yang berarti sangat menarik, memikat, atau indah dipandang.
+[Tipe: PG] Susunlah kata-kata acak berikut menjadi kalimat efektif yang benar: (1) membeli (2) apotek (3) ibu (4) di (5) obat. | 3-1-5-4-2 ~ 3-1-4-5-2 ~ 5-1-3-4-2 ~ 3-5-1-4-2 | A | Susunan kalimat efektif berpedoman pada pola Subjek-Predikat-Objek-Keterangan (S-P-O-K) yaitu "Ibu (3) membeli (1) obat (5) di (4) apotek (2)".
+[Tipe: PG] "Kemarin sore aku antri cukup lama saat membeli tiket di stasiun," kata paman. Penggunaan kata tidak baku dalam kalimat dialog tersebut jika diperbaiki menjadi kata baku adalah... | Antre ~ Mengantri ~ Antrian ~ Ngantri | A | Kata baku yang benar sesuai Pedoman Umum Ejaan Bahasa Indonesia (PUEBI) adalah "antre".
+[Tipe: PGK] Manakah kelompok kata di bawah ini yang seluruhnya termasuk dalam kosakata bidang olahraga sepak bola? | Gawang ~ Penalti ~ Kok ~ Servis | A, B | Gawang dan penalti adalah istilah dalam sepak bola. Kok dan servis adalah istilah dalam bulu tangkis/tenis.
+[Tipe: PG] Bacalah penggalan puisi anak berikut: "Di pagi hari yang cerah aku melihat seekor kupu-kupu hinggap di atas **bunga** yang sedang mekar." Makna denotatif dari kata yang dicetak tebal adalah... | Gadis desa yang sangat cantik rupawan ~ Bagian tumbuhan yang akan menjadi buah ~ Seseorang pahlawan yang menjadi idola ~ Hasil dari tabungan yang disimpan di bank | B | Makna denotatif adalah makna yang sebenarnya. Bunga dalam konteks alam merujuk pada bagian tumbuhan.
+[Tipe: PG] Aku adalah salah satu benda langit yang bercahaya. Aku memancarkan cahayaku sendiri yang sangat panas dan aku menjadi pusat tata surya. Benda langit apakah aku? | Bumi ~ Bulan ~ Bintang ~ Matahari | D | Matahari adalah bintang yang menjadi pusat tata surya dan memancarkan cahayanya sendiri.
+[Tipe: PG] Tanaman obat tradisional ini memiliki rimpang dengan bagian dalam berwarna kuning jingga. Masyarakat biasa memarut dan memeras airnya untuk dibuat jamu penambah nafsu makan atau meredakan nyeri perut. Nama tanaman obat tersebut adalah... | Jahe ~ Kencur ~ Kunyit ~ Lengkuas | C | Kunyit memiliki ciri khas warna rimpang kuning jingga dan biasa dipakai sebagai jamu tradisional.
+[Tipe: PG] Permainan tradisional anak-anak ini dilakukan dengan melompat menggunakan satu kaki pada kotak-kotak yang digambar di atas tanah. Sebelum melompat pemain harus melempar batu pipih atau gacuk ke dalam kotak. Nama permainan tradisional tersebut adalah... | Engklek ~ Gobak Sodor ~ Congklak ~ Petak Umpet | A | Ciri khas permainan engklek adalah melompat dengan satu kaki pada pola kotak di tanah menggunakan gacuk.
+`;
 
-/**
- * DATA SOAL RAW 
- */
-const RAW_SINGLE = [
-"[Tipe: PG] Di sebuah ekosistem laut yang asri, terdapat terumbu karang yang menjadi rumah bagi berbagai **biota**. Apa makna istilah biologi yang dicetak tebal tersebut? | Sekumpulan tumbuhan laut ~ Seluruh flora dan fauna di wilayah tertentu ~ Jenis ikan hias yang langka ~ Batuan yang ada di dasar laut | B | Biota merujuk pada keseluruhan kehidupan (flora dan fauna) di suatu wilayah.",
-"[Tipe: PG] Perjalanan dari Jakarta ke Bandung kini lebih cepat berkat adanya kereta cepat. Transportasi **modern** ini sangat diminati masyarakat. Sinonim kata \"*modern*\" pada kalimat tersebut adalah... | Canggih ~ Lawas ~ Tradisional ~ Terkenal | A | Modern dalam konteks transportasi merujuk pada teknologi yang canggih atau terbaru.",
-"[Tipe: PG] Pak Budi adalah **tangan kanan** direktur di perusahaan itu. Makna ungkapan \"**tangan kanan**\" adalah... | Orang yang kuat ~ Orang kepercayaan ~ Anggota keluarga ~ Orang yang rajin | B | Tangan kanan adalah idiom untuk orang yang sangat dipercaya oleh atasan.",
-"[Tipe: BS] Tentukan kebenaran penggunaan kata baku berikut ini: | Apotek (Benar) ~ Ijin (Salah) ~ Jadual (Salah) ~ Kualitas (Benar) | - | Kata baku yang benar adalah apotek, izin, jadwal, dan kualitas.",
-"[Tipe: PG] Perhatikan kalimat acak berikut: (1) membaca (2) sedang (3) di (4) perpustakaan (5) Budi (6) buku. Susunan kalimat efektif yang tepat adalah... | 5-2-1-6-3-4 ~ 5-2-6-1-3-4 ~ 1-6-2-5-3-4 ~ 5-1-6-2-3-4 | A | Susunan subjek (Budi), predikat (sedang membaca), objek (buku), dan keterangan (di perpustakaan).",
-"[Tipe: PG] [IMG: https://pixabay.com/images/download/sjb3949-steam-train-502120_1920.jpg] Kereta api ini menggunakan bahan bakar kayu atau batu bara untuk menggerakkan mesin uapnya. Berdasarkan deskripsi tersebut, alat transportasi yang dimaksud adalah... | Kereta listrik ~ Kereta uap ~ Kereta rel diesel ~ Kereta magnet | B | Deskripsi bahan bakar kayu/batu bara dan mesin uap merujuk pada kereta uap.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/kgjNZPp8/Gemini-Generated-Image-ic01gdic01gdic01.png] Tokoh pahlawan ini dikenal dengan sorban di kepala dan pakaian jubah putih saat memimpin perang di Jawa. Siapakah tokoh tersebut? | Ir. Soekarno ~ Pangeran Diponegoro ~ Sultan Hasanuddin ~ Tuanku Imam Bonjol | B | Atribut sorban dan jubah putih identik dengan Pangeran Diponegoro.",
-"[Tipe: PG] Bacalah teks berikut: \"Pemerintah Kota Bandung menggelar festival seni budaya pada hari Minggu. Acara ini dihadiri oleh ribuan warga yang antusias melihat berbagai pertunjukan tradisional.\" Ringkasan yang paling tepat dalam satu kalimat efektif adalah... | Festival seni budaya di Bandung dihadiri ribuan warga. ~ Pemerintah Kota Bandung suka menonton pertunjukan tradisional. ~ Warga sangat antusias menggelar festival pada hari Minggu. ~ Acara tradisional banyak disukai oleh masyarakat luas. | A | Ringkasan merangkum inti informasi dari teks secara padat dan jelas.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/BK6f4ymT/Gemini-Generated-Image-igp8vjigp8vjigp8.png] Urutan langkah menyalakan televisi yang benar adalah: (1) Tekan tombol power di remote, (2) Colokkan kabel ke stopkontak, (3) Pilih saluran yang diinginkan. Susunan gambar panduan yang paling tepat adalah... | 2 - 1 - 3 ~ 1 - 2 - 3 ~ 3 - 2 - 1 ~ 2 - 3 - 1 | A | Logika menyalakan alat elektronik: hubungkan ke listrik dahulu, nyalakan mesin, baru operasikan fungsinya.",
-"[Tipe: PG] Susunlah paragraf acak berikut menjadi cerita yang padu! (1) Akhirnya, ia berhasil menemukan sumber air. (2) Si Kancil merasa sangat kehausan setelah berlari seharian. (3) Dengan cepat ia meminum air itu hingga puas. (4) Ia pun berjalan menyusuri hutan untuk mencari sungai. | 2 - 4 - 1 - 3 ~ 2 - 1 - 4 - 3 ~ 4 - 2 - 1 - 3 ~ 1 - 2 - 3 - 4 | A | Alur cerita yang logis: Kancil kehausan, lalu mencari sungai, menemukan sumber air, lalu meminumnya.",
-"[Tipe: BS] Perhatikan resep es jeruk berikut: \"Siapkan 2 buah jeruk, 2 sendok gula, air es, gelas, dan sendok pengaduk.\" Tentukan kebenaran pernyataan pengelompokan berikut: | Gelas dan sendok pengaduk termasuk kelompok bahan (Salah) ~ Jeruk dan gula termasuk kelompok bahan (Benar) ~ Air es termasuk kelompok alat (Salah) | - | Jeruk, gula, dan air es adalah bahan baku. Sedangkan gelas dan sendok pengaduk adalah alat.",
-"[Tipe: PG] Teks wawancara: Dina: \"Sejak kapan Bapak berjualan bakso?\" Pak Ali: \"Saya berjualan sejak tahun 2010, Nak.\" Susunan ulang menjadi teks narasi laporan wawancara yang tepat adalah... | Dina bertanya kepada Pak Ali sejak kapan ia berjualan bakso, dan Pak Ali menjawab bahwa ia sudah berjualan sejak tahun 2010. ~ Pak Ali bertanya kepada Dina kapan ia makan bakso di tahun 2010. ~ Dina berjualan bakso sejak tahun 2010 bersama Pak Ali. ~ Pak Ali menyuruh Dina berjualan bakso sejak tahun 2010. | A | Narasi wawancara harus mengubah kalimat langsung menjadi kalimat tidak langsung tanpa mengubah maknanya.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/rK3TWz8j/Gemini-Generated-Image-t220zpt220zpt220.png] Berdasarkan poster tersebut, kapan tanggal batas pendaftaran peserta? | 15 Agustus 2026 ~ 10 Agustus 2026 ~ 17 Agustus 2026 ~ 20 Agustus 2026 | A | Jawaban ditemukan secara tersurat pada teks di dalam poster.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/NdXc7vH2/Gemini-Generated-Image-oihprooihprooihp.png] Berdasarkan tabel tersebut, jam keberangkatan Kereta Api Argo Parahyangan tujuan Bandung adalah pukul... | 08.00 WIB ~ 09.30 WIB ~ 10.15 WIB ~ 12.00 WIB | A | Informasi jam dapat dibaca secara langsung pada kolom dan baris yang sesuai di tabel jadwal kereta.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/WvWhVY45/Gemini-Generated-Image-jbitdfjbitdfjbit.png] Berdasarkan label obat tersebut, aturan pakai atau dosis yang dianjurkan untuk anak-anak adalah... | 1 sendok teh, 3 kali sehari ~ 2 sendok teh, 3 kali sehari ~ 1 sendok makan, 2 kali sehari ~ Setengah sendok teh, 3 kali sehari | A | Informasi dosis anak tersurat dengan jelas pada label kemasan obat.",
-"[Tipe: PG] Teks 1: Susu kedelai sangat baik untuk pencernaan karena mengandung banyak serat alami. Teks 2: Selain kaya protein nabati, serat tinggi dalam tahu kedelai membantu melancarkan sistem pencernaan. Kesimpulan persamaan isi kedua teks tersebut adalah... | Manfaat olahan kedelai bagi pencernaan ~ Cara memproduksi aneka olahan kedelai ~ Harga produk kedelai di pasaran ~ Kedelai sebagai bahan makanan pokok | A | Kedua teks tersebut sama-sama membahas tentang manfaat kedelai untuk sistem pencernaan manusia.",
-"[Tipe: PG] **Bacalah percakapan berikut!** Andi: \"Besok kita kumpul jam berapa untuk mengerjakan mading?\" Budi: \"Jam dua siang saja di rumahku.\" Andi: \"Oke, jangan lupa bawa karton dan spidol ya.\" Kesimpulan topik pembicaraan mereka adalah... | Persiapan tugas kelompok membuat mading ~ Rencana bermain siang hari di rumah Budi ~ Jadwal pelajaran kesenian di sekolah ~ Membeli alat tulis berupa karton dan spidol | A | Dialog tersebut berfokus pada perencanaan dan persiapan mengerjakan tugas mading bersama.",
-"[Tipe: PG] Laporan wawancara: Reporter: \"Berapa banyak hasil panen yang Bapak dapatkan musim ini?\" Narasumber: \"Alhamdulillah, karena cuaca mendukung, saya bisa memanen hingga lima ton gabah.\" Berdasarkan wawancara di atas, profesi narasumber tersebut adalah... | Petani ~ Nelayan ~ Pedagang ~ Peternak | A | Istilah \"panen\" dan \"gabah\" identik dengan mata pencaharian seorang petani.",
-"[Tipe: PG] **Bacalah penggalan puisi berikut!** \"Buku... engkaulah teman setiaku. Dalam lembaranmu kutemukan dunia baru. Tak akan lelah aku menyusuri setiap katamu.\" Pesan penyair yang ingin disampaikan kepada pembaca adalah... | Ajakan untuk gemar membaca buku yang kaya manfaat ~ Buku sangat mahal sehingga harus dijaga ~ Buku mudah rusak jika tidak dirawat dengan baik ~ Menulis sebuah buku itu butuh perjuangan | A | Puisi tersebut berisi kekaguman terhadap buku yang dapat membuka wawasan (\"dunia baru\").",
-"[Tipe: PG] **Bacalah penggalan teks berikut!** \"Matahari mulai condong ke ufuk barat dan burung-burung kembali ke sarangnya. Suasana langit perlahan berubah warna menjadi jingga keunguan. Anak-anak yang sedang bermain layangan di lapangan segera menggulung benang mereka.\" Kesimpulan perpindahan latar waktu pada cerita tersebut adalah... | Pagi beralih ke siang ~ Siang beralih ke sore ~ Sore beralih ke malam ~ Malam beralih ke pagi | C | Teks mendeskripsikan ciri-ciri waktu sore hari menjelang petang.",
-"[Tipe: PG] **Bacalah awal cerita berikut!** \"Rino sangat gemar mengoleksi mainan robot. Suatu hari saat berjalan pulang sekolah, ia melihat seorang anak kecil menangis karena mainan robotnya rusak terlindas sepeda.\" Prediksi kelanjutan cerita yang paling logis adalah... | Rino membiarkan anak itu menangis di jalan ~ Rino ikut menangis bersama anak tersebut ~ Rino menghibur anak itu dan menawarkan bantuan untuk memperbaikinya ~ Rino mengambil mainan rusak itu untuk dijual kembali | C | Kelanjutan logis untuk tokoh yang menyukai mainan adalah menunjukkan empati dan membantu memperbaikinya.",
-"[Tipe: PG] **Bacalah kalimat berikut!** \"Biji kedelai rebus yang telah dicampur ragi dibungkus rapat menggunakan daun pisang. Setelah didiamkan selama dua hari di tempat bersuhu hangat, kedelai yang awalnya terpisah-pisah kini mengalami perubahan fermentasi.\" Kesimpulan perubahan tekstur kedelai menjadi tempe adalah... | Menjadi cair dan berair ~ Menjadi padat dan saling menyatu ~ Menjadi serbuk sangat halus ~ Menjadi sangat keras seperti batu | B | Proses fermentasi tempe membuat biji kedelai terikat oleh jamur sehingga teksturnya menjadi padat.",
-"[Tipe: BS] Tentukan kebenaran pernyataan berdasarkan fenomena berikut: \"Setiap selesai libur hari raya, banyak penduduk desa yang memutuskan pindah ke kota besar untuk mencari pekerjaan.\" | Hal ini mengakibatkan kepadatan penduduk kota menurun drastis (Salah) ~ Fenomena ini memicu peningkatan kepadatan penduduk di perkotaan (Benar) | - | Urbanisasi atau perpindahan penduduk dari desa ke kota selalu menyebabkan kepadatan penduduk kota bertambah.",
-"[Tipe: PG] Pak Surya dikenal sebagai **tangan kanan** pemimpin perusahaan karena kedisiplinan dan kejujurannya. Makna ungkapan yang dicetak tebal adalah... | Seseorang yang sangat kuat secara fisik ~ Orang kepercayaan yang sangat diandalkan ~ Pemimpin kelompok yang kejam ~ Anggota keluarga dari seorang pemimpin | B | Tangan kanan adalah idiom untuk menyebut orang kepercayaan.",
-"[Tipe: PG] Perhatikan penggalan puisi berikut: \"Saat sang **dewi malam** muncul menampakkan diri, cahayanya yang lembut menerangi jalanan desa yang tadinya gelap gulita.\" Makna kias dari kata yang dicetak tebal adalah... | Bintang kejora ~ Bulan purnama ~ Lampu jalanan ~ Matahari senja | B | Dewi malam adalah kiasan atau majas yang merujuk pada bulan.",
-"[Tipe: PG] Bacalah cerita singkat berikut: \"Musang telah menolong Ular yang terjepit batu besar. Namun keesokan harinya Ular justru berbalik menyerang dan memakan anak-anak Musang. Benarlah peribahasa **air susu dibalas air tuba**.\" Makna peribahasa tersebut adalah... | Kebaikan yang dibalas dengan kebaikan serupa ~ Kebaikan yang dibalas dengan suatu kejahatan ~ Kejahatan yang dibalas dengan kejahatan yang setimpal ~ Saling tolong menolong sesama teman di hutan | B | Peribahasa tersebut bermakna perbuatan baik yang dibalas dengan perbuatan buruk atau jahat.",
-"[Tipe: PG] Di dalam pidatonya bupati berpesan: \"Pemuda adalah **tulang punggung negara**. Masa depan dan kemajuan bangsa ini ada di tangan kalian.\" Makna metafora tersebut adalah... | Pemuda adalah tumpuan kekuatan atau andalan suatu bangsa ~ Pemuda harus bekerja keras memikul barang setiap hari ~ Pemuda memiliki struktur tulang tubuh yang paling kuat ~ Pemuda selalu membawa beban yang sangat berat | A | Tulang punggung negara bermakna penopang utama atau kekuatan utama bangsa.",
-"[Tipe: PG] **Bacalah kalimat humor berikut!** \"Wah tulisanmu bagus sekali seperti sandi rumput sampai-sampai aku sama sekali tidak bisa membacanya.\" Makna tersirat dari kalimat sindiran tersebut adalah... | Memuji tulisan yang rapi dan indah ~ Menyindir tulisan yang sangat berantakan dan sulit dibaca ~ Mengajak teman belajar membuat sandi rumput ~ Menyatakan kekaguman pada bentuk huruf | B | Kalimat tersebut menggunakan majas ironi untuk menyindir keburukan dengan berpura-pura memuji.",
-"[Tipe: PG] Perhatikan pantun berikut: \"Jalan-jalan ke kota Blitar ~ Jangan lupa membeli sukun ~ Kalau kamu ingin pintar ~ Belajarlah dengan tekun\". Makna isi pantun tersebut terdapat pada baris 3 dan 4 yaitu... | Mengajak jalan-jalan ke Blitar untuk wisata ~ Menyuruh membeli buah sukun sebagai oleh-oleh ~ Nasihat agar rajin belajar apabila ingin menjadi pandai ~ Larangan bermain di luar rumah saat sedang belajar | C | Baris 3 dan 4 pada pantun merupakan isi yang mengandung pesan atau amanat.",
-"[Tipe: PG] Mendengar sepedanya dirusak dengan sengaja oleh temannya, wajah Anton memerah dan ia pun **naik pitam**. Makna idiom tersebut adalah... | Menjadi sangat bahagia ~ Menjadi sangat marah ~ Jatuh sakit dan pusing ~ Merasa sangat sedih | B | Naik pitam adalah ungkapan untuk menggambarkan seseorang yang sangat marah.",
-"[Tipe: PG] Teks biografi: \"Ki Hajar Dewantara mendirikan sekolah Taman Siswa untuk memberikan kesempatan pendidikan bagi rakyat pribumi. Berkat dedikasinya tersebut beliau mendapat julukan Bapak Pendidikan Nasional.\" Makna julukan tersebut adalah... | Orang yang pertama kali membuat bangunan sekolah ~ Tokoh pelopor dan perintis kemajuan pendidikan bangsa ~ Pejabat yang menyumbangkan banyak uang untuk sekolah ~ Guru pertama yang mengajar di seluruh Indonesia | B | Julukan tersebut diberikan sebagai penghargaan atas jasa besarnya memelopori pendidikan di Indonesia.",
-"[Tipe: PG] Di tepi pantai sore itu, **angin berbisik** lembut di telingaku membawa aroma garam laut yang khas. Makna majas personifikasi pada teks tersebut adalah... | Angin bisa berbicara secara langsung layaknya manusia ~ Suara embusan angin yang terdengar sangat pelan dan lembut ~ Seseorang berbisik membicarakan angin laut ~ Angin yang bertiup sangat kencang merusak pohon | B | Majas personifikasi mengibaratkan angin (benda mati) seolah berbisik, yang maknanya adalah embusan angin yang pelan.",
-"[Tipe: PG] Nilai keteladanan dari cerita fiksi: \"Rina menemukan dompet penuh uang di jalan dan langsung menyerahkannya ke kantor polisi.\" Tindakan dalam kehidupan sehari-hari yang sesuai dengan relevansi nilai kejujuran cerita tersebut adalah... | Mengerjakan soal ujian sendiri tanpa menyontek catatan ~ Membantu ibu menyapu halaman rumah setiap sore ~ Berbagi bekal makanan dengan teman satu bangku ~ Datang tepat waktu ke sekolah tanpa pernah terlambat | A | Tindakan mengembalikan dompet mencerminkan kejujuran, yang ekuivalen dengan tidak menyontek saat ujian.",
-"[Tipe: PG] Teks kampanye kesehatan: \"Membiasakan diri menyisihkan uang saku untuk menabung di celengan sangat bermanfaat. Saat kita butuh membeli buku tulis baru, kita tidak perlu lagi meminta uang kepada orang tua.\" Evaluasi efektivitas cara menabung tersebut bagi seorang pelajar adalah... | Sangat efektif karena melatih kemandirian finansial pelajar sejak dini ~ Kurang efektif karena pelajar belum bekerja dan tidak punya gaji ~ Tidak efektif karena jumlah uang yang disisihkan pasti sangat sedikit ~ Sangat efektif karena tujuannya hanya untuk membeli mainan mahal | A | Menabung uang saku sangat efektif untuk mendidik kemandirian dan manajemen uang anak sekolah.",
-"[Tipe: PGK] **Bacalah kutipan cerita fantasi ini!** \"Nenek Sihir mengusap gagang sapunya. Tiba-tiba sapu itu melesat menembus awan dan berbicara kepada burung-burung yang lewat.\" Peristiwa fiktif yang tidak mungkin terjadi di dunia nyata berdasarkan teks tersebut adalah... | Benda mati seperti sapu bisa terbang ~ Sapu kayu bisa berbicara ~ Burung-burung terbang di langit bebas ~ Awan berada tinggi di angkasa | A, B | Peristiwa tak masuk akal di dunia nyata adalah sapu yang bisa terbang dan sapu yang bisa berbicara.",
-"[Tipe: BS] [IMG: https://i.ibb.co.com/Dg7CzrHB/Gemini-Generated-Image-2aysx42aysx42ays.png] Teks di dalam buku tersebut mengisahkan tentang petualangan luar angkasa seorang astronot yang mendarat di planet Mars. Tentukan penilaian kesesuaian ilustrasi sampul tersebut: | Ilustrasi sampul sangat sesuai dengan isi cerita karena gambarnya cerah dan menarik perhatian (Salah) ~ Ilustrasi sampul sama sekali tidak sesuai karena gambar olahraga tidak mencerminkan tema petualangan luar angkasa (Benar) | - | Sampul buku harus merepresentasikan gagasan atau tema utama isi buku (astronomi/luar angkasa), bukan sepak bola.",
-"[Tipe: PG] Teks Surat Pembaca: \"Akhir-akhir ini, tumpukan sampah di depan gerbang sekolah kita semakin menggunung. Bau busuknya sangat mengganggu konsentrasi siswa saat belajar di kelas yang dekat dengan gerbang.\" Kalimat saran logis yang paling tepat untuk menanggapi surat pembaca tersebut adalah... | Sebaiknya kita membakar tumpukan sampah tersebut setiap pagi agar cepat habis ~ Sebaiknya pihak sekolah menyediakan tempat sampah penampungan tertutup dan mengatur jadwal pengangkutan sampah secara rutin ~ Sebaiknya kita memindahkan saja sampah-sampah itu ke depan pekarangan rumah warga sekitar ~ Biarkan saja karena nanti akan diangkut sendiri oleh tukang rongsokan yang lewat | B | Saran B adalah solusi paling efektif, sistematis, dan ramah lingkungan tanpa memindahkan masalah ke tempat lain.",
-"[Tipe: PG] Teks ulasan buku anak: \"Buku fabel ini sangat jelek dan membosankan. Saya tidak suka sama sekali karena kebetulan sampulnya berwarna hijau, sedangkan warna kesukaan saya adalah merah.\" Penilaian terhadap tingkat objektifitas ulasan tersebut adalah... | Ulasan tersebut sangat objektif karena memuat kejujuran pendapat pribadi dari pembaca ~ Ulasan tersebut tidak objektif karena penilaian hanya didasarkan pada selera warna personal pengulas, bukan berdasarkan kualitas isi buku ~ Ulasan tersebut sudah objektif karena menyajikan kritik yang tajam bagi penulis ~ Ulasan tersebut objektif karena warna sampul adalah satu-satunya hal penting dari buku | B | Ulasan yang baik dan objektif harus didasari pada bukti kutipan isi buku (alur, penokohan, pesan), bukan sekadar selera visual sepihak.",
-"[Tipe: PG] [IMG: https://i.ibb.co.com/N6cdNhgn/Gemini-Generated-Image-njunj4njunj4njun.png] Urutan langkah infografis yang paling logis dan benar adalah... | 4 - 3 - 1 - 2 ~ 1 - 2 - 3 - 4 ~ 3 - 4 - 1 - 2 ~ 4 - 1 - 3 - 2 | A | Urutan logis mencuci tangan: membasahi tangan, memakai sabun, membilas busa, dan mengeringkannya.",
-"[Tipe: PG] **Bacalah cerita jenaka berikut!** Di tengah keheningan kelas saat ujian matematika yang menegangkan, perut Doni tiba-tiba berbunyi sangat nyaring seperti paduan suara nyanyian katak di sawah, \"Kruuuk... kruk!\" Sontak seluruh teman sekelas menoleh kepadanya. Doni menutupi wajahnya dengan kertas ujian sambil tersenyum malu. Bagian teks manakah yang paling menciptakan kesan lucu? | Di tengah keheningan kelas saat ujian matematika ~ Sontak seluruh teman sekelas menoleh kepadanya ~ Perut Doni berbunyi nyaring seperti paduan suara nyanyian katak di sawah ~ Doni menutupi wajahnya dengan kertas ujian | C | Majas hiperbola (paduan suara nyanyian katak) di tengah situasi hening dan serius menciptakan kontras yang memancing tawa.",
-"[Tipe: PG] **Bacalah kutipan cerita berikut**: Rina berlari sekencang-kencangnya menembus hujan menuju stasiun. Sayangnya, kereta terakhir baru saja melaju meninggalkannya. Malam itu stasiun mulai sepi, dan Rina hanya bisa berdiri kedinginan menatap rel kereta yang kosong di kejauhan. Menyimpulkan ending cerita yang menggantung tersebut, perasaan tokoh Rina di akhir cerita adalah... | Sangat gembira karena bisa bermain air hujan di stasiun ~ Merasa amat kecewa, putus asa, dan sedih karena tertinggal kereta ~ Merasa lega karena bisa pulang berjalan kaki ~ Sangat marah dan ingin merusak fasilitas stasiun | B | Situasi tertinggal angkutan terakhir di malam hari yang hujan tentu menimbulkan kesedihan dan keputusasaan mendalam.",
-"[Tipe: PG] Teks Naskah Drama: Raja: (Berdiri mendadak dari singgasananya sambil menunjuk prajurit dengan mata melotot) \"Berapa kali harus kukatakan padamu?! Jangan biarkan pengkhianat itu lolos dari penjara ini!\" Nada bicara yang paling tepat digunakan oleh pemeran Raja saat mengucapkan dialog tersebut adalah... | Nada tinggi, tegas, dan membentak penuh kemarahan ~ Nada lembut, pelan, dan penuh kasih sayang ~ Nada berbisik lirih seperti orang ketakutan ~ Nada datar dan mengantuk tanpa ekspresi | A | Tanda seru ganda, huruf kapital tersembunyi, dan gestur \"mata melotot\" merupakan indikasi kemarahan memuncak.",
-"[Tipe: PG] Kutipan Cerita Horor Anak: \"Malam itu hujan turun rintik-rintik. Lampu ruang tamu tiba-tiba padam mendadak. Andi meraba-raba mencari lilin dalam kegelapan. Tiba-tiba, terdengar suara aneh langkah kaki yang terseret pelan mendekati pintu kamarnya. Sreeek... sreeek... Jantung Andi berdegup sangat kencang.\" Bagian narasi manakah yang memegang peran paling kuat menciptakan suasana tegang? | Malam itu hujan turun rintik-rintik di luar rumah ~ Andi meraba-raba mencari lilin di atas meja ~ Terdengar suara aneh langkah kaki yang terseret pelan mendekati kamarnya ~ Lampu ruang tamu tiba-tiba padam mendadak | C | Kemunculan unsur misteri yang mendekati karakter (suara langkah terseret) adalah elemen puncak pembangun ketegangan.",
-"[Tipe: PG] Lirik lagu nasional: \"Maju tak gentar, membela yang benar! Maju tak gentar, hak kita diserang! Maju serentak, mengusir penyerang!\" Kesimpulan respons emosional berupa semangat yang ingin ditularkan oleh penulis lagu tersebut kepada generasi muda adalah... | Semangat untuk menyerah saja pada keadaan yang sulit ~ Semangat keberanian luar biasa dan pantang mundur dalam membela kebenaran ~ Semangat bersantai-santai menikmati kemerdekaan di rumah ~ Semangat untuk bersembunyi dari para penyerang | B | Diksi \"maju tak gentar\" (tidak takut) bertujuan membakar semangat heroisme dan keberanian patriotik.",
-"[Tipe: PG] Teks cerita misteri: \"Keesokan paginya, kotak kayu rahasia di atas meja kakek ternyata telah terbuka gemboknya. Namun, isinya bukanlah tumpukan koin emas seperti yang kuduga selama ini, melainkan secarik peta tua kumal dengan tanda silang merah berdarah di ujungnya.\" Kalimat manakah yang paling memancing rasa penasaran pembaca dari kutipan tersebut? | Keesokan paginya, kotak kayu rahasia di atas meja kakek telah terbuka ~ Kotak kayu misterius itu berada di atas meja ~ Isinya bukanlah tumpukan koin emas seperti yang kuduga ~ Terdapat secarik peta tua kumal dengan tanda silang merah berdarah di ujungnya | D | Peta yang memiliki tanda spesifik (silang merah) memberikan petunjuk adanya teka-teki baru, membuat pembaca bertanya-tanya arah petualangan selanjutnya.",
-"[Tipe: PG] Dialog Perpisahan Kelas: Siti: \"Jaga dirimu baik-baik di SMP seberang pulau sana, Lani. Jangan lupa kirimi aku pesan setiap minggu, ya.\" Lani: \"(Menggenggam tangan Siti) Tentu saja, Siti. Kamu adalah tempat terbaikku berbagi rahasia selama 6 tahun ini. Aku pasti akan sangat merindukanmu.\" Kesimpulan kedalaman hubungan antartokoh berdasarkan dialog tersebut adalah... | Mereka hanyalah teman sekelas biasa yang kebetulan duduk sebangku ~ Mereka memiliki ikatan persahabatan sejati yang sangat kuat dan emosional ~ Mereka adalah saudara kandung yang akan dipisahkan ~ Mereka baru saja saling mengenal saat kelulusan | B | Dialog \"tempat terbaikku berbagi rahasia\" dan gestur genggaman tangan mencerminkan tingkat kepercayaan dan persahabatan yang sangat dalam.",
-"[Tipe: PG] Sebuah cerita inspiratif menceritakan perjuangan tokoh penemu, Thomas Alva Edison, yang dikabarkan gagal ribuan kali sebelum akhirnya berhasil menemukan bola lampu yang menyala. Kutipan pernyataan manakah dari tokoh tersebut yang paling memotivasi semangat pantang menyerah pelajar? | \"Lampu adalah penemuan yang sangat mahal pembuatannya pada zamanku.\" ~ \"Saya sebenarnya tidak gagal, saya hanya menemukan 10.000 cara yang ternyata tidak berhasil.\" ~ \"Saya selalu bekerja keras di sebuah laboratorium kecil yang sangat gelap setiap malam.\" ~ \"Dibutuhkan banyak sekali bahan baku kaca untuk membuat bola lampu buatan saya.\" | B | Membingkai kegagalan sebagai \"cara yang tidak berhasil\" adalah pola pikir (mindset) positif yang luar biasa memotivasi pembaca untuk tidak menyerah.",
-"[Tipe: PG] Di dalam ekosistem laut yang sehat terdapat beragam biota laut yang hidup saling bergantungan. Makna istilah biologi yang dicetak tebal pada kalimat tersebut adalah... | Seluruh flora dan fauna di suatu wilayah ~ Kumpulan tumbuhan laut yang hidup di dasar karang ~ Jenis ikan pemakan plankton yang ukurannya kecil ~ Bebatuan karang tempat ikan bersembunyi | A | Biota adalah keseluruhan kehidupan flora dan fauna yang terdapat di dalam suatu daerah atau ekosistem tertentu.",
-"[Tipe: PG] Cuaca di padang rumput itu sangat terik pada siang hari sehingga tanahnya menjadi kering. Antonim dari kata sifat yang mendeskripsikan kondisi alam tersebut adalah... | Panas ~ Teduh ~ Cerah ~ Gersang | B | Antonim atau lawan kata dari terik (sangat panas) adalah teduh.",
-"[Tipe: PG] Keindahan pemandangan Pantai Kuta di sore hari sungguh *menawan hati* setiap turis asing yang datang. Makna konotatif positif dari frasa bercetak miring tersebut adalah... | Sangat indah dan menarik perhatian ~ Sangat luas dan cukup berbahaya ~ Sangat sepi dan menenangkan ~ Sangat ramai dan penuh sesak | A | Frasa 'menawan hati' memiliki konotasi positif yang berarti sangat menarik, memikat, atau indah dipandang.",
-"[Tipe: PG] Susunlah kata-kata acak berikut menjadi kalimat efektif yang benar: (1) membeli (2) apotek (3) ibu (4) di (5) obat. | 3-1-5-4-2 ~ 3-1-4-5-2 ~ 5-1-3-4-2 ~ 3-5-1-4-2 | A | Susunan kalimat efektif berpedoman pada pola Subjek-Predikat-Objek-Keterangan (S-P-O-K) yaitu \"Ibu (3) membeli (1) obat (5) di (4) apotek (2)\".",
-"[Tipe: PG] \"Kemarin sore aku antri cukup lama saat membeli tiket di stasiun,\" kata paman. Penggunaan kata tidak baku dalam kalimat dialog tersebut jika diperbaiki menjadi kata baku adalah... | Antre ~ Mengantri ~ Antrian ~ Ngantri | A | Kata baku yang benar sesuai Pedoman Umum Ejaan Bahasa Indonesia (PUEBI) adalah \"antre\".",
-"[Tipe: PGK] Manakah kelompok kata di bawah ini yang seluruhnya termasuk dalam kosakata bidang olahraga sepak bola? | Gawang ~ Penalti ~ Kok ~ Servis | A, B | Gawang dan penalti adalah istilah dalam sepak bola. Kok dan servis adalah istilah dalam bulu tangkis/tenis.",
-"[Tipe: PG] Bacalah penggalan puisi anak berikut: \"Di pagi hari yang cerah aku melihat seekor kupu-kupu hinggap di atas **bunga** yang sedang mekar.\" Makna denotatif dari kata yang dicetak tebal adalah... | Gadis desa yang sangat cantik rupawan ~ Bagian tumbuhan yang akan menjadi buah ~ Seseorang pahlawan yang menjadi idola ~ Hasil dari tabungan yang disimpan di bank | B | Makna denotatif adalah makna yang sebenarnya. Bunga dalam konteks alam merujuk pada bagian tumbuhan.",
-"[Tipe: PG] Aku adalah salah satu benda langit yang bercahaya. Aku memancarkan cahayaku sendiri yang sangat panas dan aku menjadi pusat tata surya. Benda langit apakah aku? | Bumi ~ Bulan ~ Bintang ~ Matahari | D | Matahari adalah bintang yang menjadi pusat tata surya dan memancarkan cahayanya sendiri.",
-"[Tipe: PG] Tanaman obat tradisional ini memiliki rimpang dengan bagian dalam berwarna kuning jingga. Masyarakat biasa memarut dan memeras airnya untuk dibuat jamu penambah nafsu makan atau meredakan nyeri perut. Nama tanaman obat tersebut adalah... | Jahe ~ Kencur ~ Kunyit ~ Lengkuas | C | Kunyit memiliki ciri khas warna rimpang kuning jingga dan biasa dipakai sebagai jamu tradisional.",
-"[Tipe: PG] Permainan tradisional anak-anak ini dilakukan dengan melompat menggunakan satu kaki pada kotak-kotak yang digambar di atas tanah. Sebelum melompat pemain harus melempar batu pipih atau gacuk ke dalam kotak. Nama permainan tradisional tersebut adalah... | Engklek ~ Gobak Sodor ~ Congklak ~ Petak Umpet | A | Ciri khas permainan engklek adalah melompat dengan satu kaki pada pola kotak di tanah menggunakan gacuk."
-];
-
-const RAW_CLUSTER_TEXT = `###
+        const RAW_CLUSTER = `
+###
 [WACANA: Rahasia Kesehatan di Musim Pancaroba] Kondisi cuaca yang tidak menentu belakangan ini membuat tubuh rentan terserang penyakit. Perubahan suhu dari **panas** ke dingin yang tiba-tiba sering kali memicu gangguan kesehatan. Untuk menjaga imunitas, dokter menyarankan konsumsi vitamin secara rutin. Jika muncul gejala (1)... seperti demam atau batuk, sebaiknya segera periksa ke (2)... terdekat. Selain itu, menjaga kebersihan diri dengan rajin mencuci tangan sangatlah penting. Langkah mencuci tangan dimulai dengan membasahi tangan, memakai sabun, menggosok telapak serta punggung tangan, membersihkan sela jari, lalu membilasnya dengan air mengalir hingga bersih.
-[Tipe: PG] Apa antonim dari kata "**panas**" yang mendeskripsikan kondisi alam pada teks tersebut? | Hangat ~ Sejuk ~ Dingin ~ Terik | C | Antonim atau lawan kata panas dalam konteks suhu adalah dingin.
-[Tipe: PG] Isilah rumpang (1) dan (2) pada teks dengan istilah medis yang tepat! | (1) Gejala - (2) Apotek ~ (1) Diagnosis - (2) Laboratorium ~ (1) Klinis - (2) Puskesmas ~ (1) Pasien - (2) Apotek | C | Istilah medis sederhana yang tepat untuk melengkapi teks adalah klinis (terkait gejala) dan puskesmas (tempat periksa).
+[Tipe: PG] Apa antonim dari kata "**panas**" yang mendeskripsikan kondisi alam pada teks tersebut? | Hangat ~ Sejuk ~ Dingin ~ Terik | C | Antonim atau lawan kata panas dalam konteks suhu adalah dingin. 
+[Tipe: PG] Isilah rumpang (1) dan (2) pada teks dengan istilah medis yang tepat! | (1) Gejala - (2) Apotek ~ (1) Diagnosis - (2) Laboratorium ~ (1) Klinis - (2) Puskesmas ~ (1) Pasien - (2) Apotek | C | Istilah medis sederhana yang tepat untuk melengkapi teks adalah klinis (terkait gejala) dan puskesmas (tempat periksa). 
 [Tipe: PGK] Manakah langkah-langkah mencuci tangan yang benar sesuai teks? | Membasahi tangan dan memakai sabun ~ Menggosok punggung tangan ~ Membersihkan sela-sela jari ~ Mengeringkan dengan baju | A, B, C | Berdasarkan teks, langkahnya adalah membasahi, sabun, gosok punggung, dan sela jari.
 ###
-###
 [WACANA: Keajaiban Metamorfosis Katak] Katak merupakan hewan amfibi yang mengalami siklus hidup unik. Proses ini diawali dari telur yang diletakkan induknya di dalam air. Setelah beberapa hari, telur menetas menjadi kecebong atau berudu yang bernapas dengan insang. Seiring berjalannya waktu, pada kecebong tumbuh kaki belakang, disusul kaki depan, dan ekornya mulai memendek hingga terbentuklah katak muda. Akhirnya, katak muda tumbuh menjadi katak dewasa yang bernapas menggunakan paru-paru dan kulit. Pengamatan ini dicatat dalam tabel pertumbuhan untuk melihat perubahan panjang tubuhnya setiap minggu.
-[Tipe: BS] Tentukan benar atau salah pernyataan mengenai siklus hidup katak berdasarkan teks: | Kecebong bernapas menggunakan paru-paru (Salah) ~ Kaki depan tumbuh lebih dulu daripada kaki belakang (Salah) ~ Katak dewasa bernapas dengan paru-paru dan kulit (Benar) | - | Kecebong menggunakan insang, kaki belakang tumbuh lebih dulu, dan dewasa menggunakan paru-paru/kulit.
-[Tipe: PG] [IMG: https://i.ibb.co.com/Psz3GG0n/Gemini-Generated-Image-9b5iel9b5iel9b5i.png] Bagian diagram yang kosong setelah fase "Telur" dan sebelum "Katak Muda" seharusnya diisi dengan... | Katak Dewasa ~ Kecebong ~ Telur Ikan ~ Kepompong | B | Setelah telur menetas, fase berikutnya dalam metamorfosis katak adalah kecebong/berudu.
+[Tipe: BS] Tentukan benar atau salah pernyataan mengenai siklus hidup katak berdasarkan teks: | Kecebong bernapas menggunakan paru-paru (Salah) ~ Kaki depan tumbuh lebih dulu daripada kaki belakang (Salah) ~ Katak dewasa bernapas dengan paru-paru dan kulit (Benar) | - | Kecebong menggunakan insang, kaki belakang tumbuh lebih dulu, dan dewasa menggunakan paru-paru/kulit. 
+[Tipe: PG] [IMG: https://i.ibb.co.com/Psz3GG0n/Gemini-Generated-Image-9b5iel9b5iel9b5i.png] Bagian diagram yang kosong setelah fase "Telur" dan sebelum "Katak Muda" seharusnya diisi dengan... | Katak Dewasa ~ Kecebong ~ Telur Ikan ~ Kepompong | B | Setelah telur menetas, fase berikutnya dalam metamorfosis katak adalah kecebong/berudu. 
 [Tipe: PGK] Informasi apa saja yang dapat dimasukkan ke dalam tabel data hasil laporan pengamatan teks di atas? | Nama pengamat ~ Panjang tubuh katak setiap minggu ~ Tahapan perkembangan yang terjadi ~ Harga pakan katak | B, C | Teks menyebutkan pencatatan perubahan panjang tubuh dan tahapan pertumbuhan.
 ###
-###
 [WACANA: Sosok Sang Proklamator] Mohammad Hatta, atau yang akrab disapa Bung Hatta, lahir pada 12 Agustus 1902 di Bukittinggi. Beliau adalah negarawan dan ekonom besar Indonesia yang menjabat sebagai Wakil Presiden pertama. Sejak muda, beliau aktif dalam organisasi pergerakan nasional. Pada tahun 1921, Hatta pergi ke Belanda untuk belajar di Handels Hogeschool di Rotterdam. Beliau dikenal sebagai sosok yang sangat gemar membaca buku. Bersama Bung Karno, beliau memproklamasikan kemerdekaan Indonesia pada 17 Agustus 1945. Karena jasanya yang besar dalam bidang ekonomi dan koperasi, beliau dijuluki sebagai Bapak Koperasi Indonesia.
-[Tipe: PG] Pada lini masa tahun 1921, peristiwa apa yang dialami oleh Bung Hatta? | Lahir di Bukittinggi ~ Menjabat Wakil Presiden ~ Pergi ke Belanda untuk belajar ~ Memproklamasikan kemerdekaan | C | Berdasarkan teks, pada tahun 1921 beliau berangkat ke Belanda.
+[Tipe: PG] Pada lini masa tahun 1921, peristiwa apa yang dialami oleh Bung Hatta? | Lahir di Bukittinggi ~ Menjabat Wakil Presiden ~ Pergi ke Belanda untuk belajar ~ Memproklamasikan kemerdekaan | C | Berdasarkan teks, pada tahun 1921 beliau berangkat ke Belanda. 
 [Tipe: PG] Jika kita membuat bagan pohon klasifikasi tentang peran Bung Hatta, manakah kategori yang sesuai? | Pahlawan Nasional -> Bidang Ekonomi -> Bapak Koperasi ~ Pahlawan Nasional -> Bidang Militer -> Jenderal ~ Penulis -> Fiksi -> Novelis ~ Olahragawan -> Bulu Tangkis -> Juara | A | Bung Hatta diklasifikasikan sebagai pahlawan nasional di bidang ekonomi (Bapak Koperasi).
-###
 ###
 [WACANA: Bencana Longsor di Desa Suka Maju] Hujan deras yang mengguyur tanpa henti sejak Sabtu malam mengakibatkan bencana tanah longsor di Desa Suka Maju pada hari Minggu, 12 November 2026. Material tanah menutupi jalan utama desa sehingga aktivitas warga lumpuh total. Tim evakuasi gabungan segera tiba di lokasi untuk membersihkan jalan dan membantu memindahkan warga ke tempat yang lebih aman.
 Bencana ini sebenarnya tidak hanya disebabkan oleh faktor cuaca ekstrem semata. Terdapat beberapa faktor pendukung lain yang memperburuk keadaan tanah di perbukitan tersebut. Salah satunya adalah penebangan liar yang terus marak terjadi di lereng bukit. Akar pohon yang seharusnya berfungsi menahan air tanah kini telah hilang, sehingga struktur tanah menjadi rapuh dan sangat mudah longsor saat diterjang air hujan.
@@ -269,14 +262,12 @@ Bencana ini sebenarnya tidak hanya disebabkan oleh faktor cuaca ekstrem semata. 
 [Tipe: PG] Manakah kalimat utama pada paragraf kedua dalam teks eksposisi tersebut? | Bencana ini sebenarnya tidak hanya disebabkan oleh faktor cuaca ekstrem semata. ~ Terdapat beberapa faktor pendukung lain yang memperburuk keadaan tanah di perbukitan tersebut. ~ Salah satunya adalah penebangan liar yang terus marak terjadi di lereng bukit. ~ Akar pohon yang seharusnya berfungsi menahan air tanah kini telah hilang. | A | Ide pokok paragraf kedua bersifat deduktif, terletak pada kalimat pertama di paragraf tersebut.
 [Tipe: PGK] Manakah pernyataan yang termasuk sebagai gagasan pendukung pada paragraf kedua teks tersebut? | Adanya penebangan liar di lereng bukit ~ Hilangnya fungsi akar pohon sebagai penahan air tanah ~ Hujan deras turun terus menerus pada hari Sabtu malam ~ Tim evakuasi gabungan datang ke lokasi kejadian | A, B | Gagasan pendukung pada paragraf kedua merinci faktor penyebab lain terjadinya longsor (penebangan liar dan hilangnya akar penahan air).
 ###
-###
 [WACANA: Kesombongan Sang Merak] Di sebuah hutan yang lebat, hiduplah seekor Merak yang sangat bangga dengan bulunya yang indah. Setiap hari, ia memamerkan ekornya yang berkilauan kepada burung-burung lain, terutama kepada Gagak yang bulunya hitam legam. "Lihatlah buluku, Gagak! Sungguh cantik, tidak seperti bulumu yang kusam," ejek Merak.
 Gagak hanya terdiam dan tidak membalas. Suatu hari, seorang pemburu datang dan memasang perangkap jaring. Karena ekornya yang panjang dan berat, Merak kesulitan terbang dengan cepat hingga akhirnya kakinya tersangkut jaring. Gagak yang melihat kejadian itu segera memanggil kawanan hewan lain dan bersama-sama mematuk tali jaring hingga Merak berhasil bebas. Merak menunduk malu dan meminta maaf, menyadari bahwa keindahan fisiknya tidak ada gunanya jika ia tidak memiliki teman.
 [Tipe: PGK] Siapa saja tokoh yang disebutkan secara spesifik dalam cerita fabel tersebut? | Merak ~ Gagak ~ Pemburu ~ Singa | A, B, C | Teks secara jelas menyebutkan kehadiran tokoh Merak, Gagak, dan Pemburu.
 [Tipe: PG] Berdasarkan teks, bagaimana watak dari tokoh Merak pada awal cerita? | Sombong ~ Pemberani ~ Baik hati ~ Pemalu | A | Merak sering memamerkan bulunya dan mengejek burung lain, yang menunjukkan sifat sombong.
 [Tipe: PG] Apa yang menjadi penyebab utama konflik antara Merak dan Gagak di bagian awal cerita? | Merak mengejek bulu Gagak yang berwarna kusam ~ Gagak iri melihat ekor Merak yang indah ~ Pemburu datang untuk memasang perangkap jaring ~ Gagak diam-diam merusak bulu Merak | A | Konflik awal dipicu oleh sikap Merak yang mengejek fisik Gagak.
 [Tipe: PG] Kesimpulan amanat moral yang dapat diambil dari cerita fabel tersebut adalah... | Janganlah menyombongkan diri karena setiap orang pasti saling membutuhkan ~ Bantulah teman yang kesusahan agar kita diberi imbalan olehnya ~ Memiliki fisik yang indah pasti akan mendatangkan bahaya besar ~ Burung gagak lebih tangguh dan kuat dibandingkan burung merak | A | Pesan intinya adalah larangan bersikap sombong dan pentingnya persahabatan/saling membantu.
-###
 ###
 [WACANA: Persiapan Karya Wisata Sekolah] Berdasarkan rapat dewan guru, SD Nusantara akan mengadakan karya wisata pada akhir bulan. Melalui selembar surat undangan resmi yang dibagikan hari ini, kepala sekolah mengundang seluruh wali murid untuk hadir dalam rapat guna membahas rincian biaya dan alat transportasi acara tersebut.
 Keesokan harinya, muncul pengumuman di papan mading sekolah bahwa seluruh siswa kelas VI yang ikut serta diwajibkan membawa topi, buku catatan, dan botol minum sendiri dari rumah. Laporan kunjungan tahun lalu menyebutkan bahwa tujuan karya wisata kali ini adalah Museum Sejarah Nasional dan Taman Purbakala.
@@ -286,20 +277,17 @@ Di dalam kelas, Rina mengajak sahabatnya. "Siti, nanti pas jam istirahat kita pe
 [Tipe: PG] Di mana lokasi objek wisata yang akan dikunjungi oleh siswa SD Nusantara? | Museum Sejarah Nasional dan Taman Purbakala ~ Kebun Binatang dan Museum Sejarah ~ Taman Purbakala dan Candi Borobudur ~ Museum Geologi dan Taman Kota Nasional | A | Informasi lokasi wisata disebutkan pada akhir paragraf kedua teks.
 [Tipe: PG] Apa alasan utama Siti menolak ajakan Rina pergi ke kantin? | Siti sedang merasa sakit perut ~ Siti harus segera pergi ke ruang guru ~ Siti sudah membawa bekal makanan sendiri ~ Siti belum selesai mengerjakan tugas kelompok | A | Disebutkan di paragraf ketiga melalui dialog Siti: "perutku sedang melilit sejak pagi."
 ###
-###
 [WACANA: Mengenang Jenderal Sudirman] (Kutipan pidato Kepala Sekolah pada saat upacara) "Anak-anakku yang Bapak banggakan. Hari ini kita berdiri di lapangan untuk memperingati Hari Pahlawan. Mari kita sejenak mengenang sosok Panglima Besar Jenderal Sudirman. Beliau lahir di Kabupaten Purbalingga pada tahun 1916. Semangat juang dan patriotisme beliau sungguh luar biasa serta patut kita teladani bersama.
 Perlu kalian ketahui, meskipun beliau sedang dalam kondisi sakit parah dan paru-parunya hanya berfungsi sebagian, Jenderal Sudirman tidak pernah sekalipun menyerah. Beliau tetap memimpin pasukan melakukan perang gerilya keluar masuk hutan demi mempertahankan kemerdekaan Republik Indonesia. Beliau rela mengorbankan kenyamanan dan kesehatannya karena rasa cinta yang besar terhadap tanah air. Bapak sangat berharap, kalian sebagai generasi penerus dapat mewarisi semangat pantang menyerah tersebut dalam belajar demi meraih cita-cita."
 [Tipe: PG] Berdasarkan teks pidato tersebut, tahun kelahiran pahlawan Jenderal Sudirman adalah... | 1916 ~ 1945 ~ 1928 ~ 1908 | A | Informasi tersebut secara eksplisit tertulis di paragraf pertama pada teks (tahun 1916).
 [Tipe: PG] Kesimpulan tujuan utama pembicara (Bapak Kepala Sekolah) dalam menyampaikan pidato tersebut adalah... | Mengajak para siswa meneladani semangat pantang menyerah pahlawan ~ Menjelaskan sejarah berdirinya Kabupaten Purbalingga secara detail ~ Menceritakan pengobatan penyakit paru-paru yang diderita sang pahlawan ~ Meminta seluruh siswa untuk berlatih perang gerilya di dalam hutan | A | Paragraf terakhir menyimpulkan harapan pembicara agar para pelajar meneladani semangat pantang menyerah Jenderal Sudirman.
 [Tipe: PGK] Nilai kepahlawanan apa saja yang ditunjukkan oleh sosok Jenderal Sudirman berdasarkan cerita sejarah di atas? | Rela berkorban demi mempertahankan negara ~ Pantang menyerah meskipun sedang dalam keadaan sakit ~ Gemar menabung untuk mempersiapkan bekal masa depan ~ Disiplin menjaga kebersihan selama berada di dalam hutan | A, B | Teks menyimpulkan bahwa Jenderal Sudirman pantang menyerah dan rela mengorbankan kesehatan/kenyamannya demi kemerdekaan.
 ###
-###
 [WACANA: Dampak Kenaikan Suhu dan Kerusakan Lingkungan] Bumi kita sedang menghadapi tantangan iklim yang sangat besar. Pemanasan global menyebabkan suhu rata-rata bumi terus meningkat dari tahun ke tahun tanpa henti. Jika suhu bumi ini terus naik secara ekstrem, lapisan es abadi di wilayah kutub akan perlahan mencair dan menyebabkan naiknya permukaan air laut.
 Selain masalah cuaca, kelestarian kondisi tanah juga sangat terancam. Penebangan liar yang marak di area perbukitan membuat tanah kehilangan struktur pengikat utamanya yaitu akar pepohonan rindang. Akibatnya sangat fatal. Saat hujan lebat mengguyur area tersebut, lapisan tanah bagian atas dengan mudah tersapu aliran air ke daratan yang lebih rendah. Fenomena alam yang sederhana ini sebenarnya menyerupai saat kita melakukan eksperimen sains di sekolah; sebuah bongkahan es batu keras yang diletakkan di atas piring terbuka di bawah terik matahari pasti akan berubah bentuk seiring berjalannya waktu.
 [Tipe: PG] Berdasarkan teks sains di atas, prediksi dampak jangka panjang jika suhu bumi terus mengalami kenaikan adalah... | Terjadinya kekeringan tanah di seluruh penjuru dunia ~ Mencairnya es di kutub yang menaikkan permukaan air laut ~ Semakin banyaknya pohon rindang yang tumbuh subur ~ Berkurangnya volume air laut karena proses penguapan | B | Teks menyebutkan secara spesifik bahwa kenaikan suhu akan mencairkan es abadi di kutub.
 [Tipe: PG] Berdasarkan teks, kesimpulan penyebab utama perubahan kondisi tanah bukit yang mengalami erosi adalah... | Hujan gerimis yang turun sepanjang malam hari ~ Hilangnya akar pepohonan akibat praktik penebangan liar ~ Suhu bumi yang meningkat drastis setiap tahun ~ Mencairnya es batu di bawah terik sinar matahari | B | Teks menjelaskan akar pohon yang hilang (karena penebangan liar) membuat lapisan tanah mudah tersapu air.
 [Tipe: BS] Tentukan kebenaran kesimpulan perubahan wujud berdasarkan teks percobaan es batu: | Es batu yang diletakkan di bawah terik matahari akan mengalami proses mencair menjadi air (Benar) ~ Es batu tersebut akan mengalami perubahan wujud menjadi gas yang disebut menyublim (Salah) | - | Perubahan dari benda padat (es) menjadi cair akibat panas disebut mencair.
-###
 ###
 [WACANA: Pelajaran Berharga Budi] Dulu, Budi adalah siswa yang paling sering tertidur di kelas dan enggan mengerjakan tugas sekolah. Namun sejak ia melihat ayahnya rela bekerja kasar sampai larut malam demi membelikannya sepatu baru, hati Budi sangat tersentuh dan sikapnya berubah total menjadi murid yang paling rajin belajar.
 Suatu hari, Budi melihat kejadian tidak menyenangkan di teras sekolah. Tiga orang siswa kelas sebelah sedang mendorong dan menertawakan seorang siswa baru yang tampak ketakutan. Di saat yang bersamaan, Budi juga sedang memiliki masalah dengan sahabat karibnya sendiri yaitu Andi. Mereka berdua saling mendiamkan karena Andi meminjam buku komik Budi dan secara tidak sengaja merobek sampulnya. Persahabatan mereka kini terasa sangat canggung. Budi menyadari ia harus segera menyelesaikan semua masalah sosial ini dengan bijak.
@@ -308,13 +296,11 @@ Suatu hari, Budi melihat kejadian tidak menyenangkan di teras sekolah. Tiga oran
 [Tipe: PGK] Solusi alternatif realistis apa saja yang bisa Budi lakukan untuk menyelesaikan konflik persahabatannya dengan Andi? | Memaafkan ketidaksengajaan Andi dan mengajaknya berbicara kembali ~ Menyuruh Andi membayar denda sepuluh kali lipat harga komik ~ Membicarakan baik-baik dan meminta Andi untuk menyampul ulang komik tersebut ~ Memusuhi Andi seumur hidup dan mencari teman baru | A, C | Solusi realistis untuk menyelesaikan masalah tanpa memutuskan pertemanan adalah memaafkan atau mencari solusi perbaikan bersama.
 [Tipe: PG] Tindakan paling tepat yang seharusnya Budi lakukan sebagai saksi mata melihat peristiwa perundungan (bullying) terhadap siswa baru adalah... | Ikut menertawakan siswa baru tersebut agar terlihat keren ~ Mengabaikannya dan pergi bermain ke lapangan ~ Melaporkan tindakan tiga siswa tersebut kepada guru piket atau wali kelas ~ Menghajar tiga siswa tersebut sendirian | C | Tindakan teraman dan paling bijak bagi siswa SD saat melihat bullying adalah melapor kepada otoritas sekolah (guru).
 ###
-###
 [WACANA: Kebiasaan Kecil, Dampak Besar] Berbagai permasalahan di lingkungan bisa dicegah apabila kita menerapkan kebiasaan positif sehari-hari. Contohnya di lingkungan sekolah, pamflet kampanye kelestarian alam selalu mengingatkan siswa untuk menutup keran rapat-rapat setelah selesai mencuci tangan. Air bersih adalah sumber kehidupan yang jumlahnya terbatas.
 Di area publik atau tempat umum, kedisiplinan kita juga sangat diuji. Saat berada di halte angkutan umum, membiasakan budaya antre mencerminkan tingkat peradaban masyarakat. Begitu pula saat berada di rumah. Kegiatan gotong royong membesihkan fasilitas umum perumahan secara rutin adalah wujud nyata kepedulian yang harus dijaga. Tanpa partisipasi semua warga, lingkungan akan menjadi kumuh dan tidak sehat.
 [Tipe: BS] [IMG: Gambar Anak Tersenyum Membiarkan Keran Air Menyala Deras Sampai Meluber] Tentukan penilaian terhadap perilaku siswa pada gambar jika dikaitkan dengan teks tersebut! | Tindakan anak pada gambar patut dicontoh karena membantu membersihkan lantai (Salah) ~ Perilaku tersebut bertentangan dengan teks karena menyebabkan pemborosan air bersih (Benar) | - | Teks mengajarkan menghemat air dengan menutup keran, gambar tersebut justru menunjukkan pemborosan.
 [Tipe: PGK] Mengaitkan teks budaya publik dengan kehidupan nyata, apa dampak positif penerapan budaya antre pada gambar tersebut? | Proses naik bus menjadi lebih tertib dan tidak berdesakan ~ Memicu pertengkaran antar penumpang di pintu masuk ~ Melatih kesabaran dan menghargai hak orang lain yang datang lebih dulu ~ Memperlambat jadwal keberangkatan bus secara signifikan | A, C | Budaya antre menciptakan ketertiban umum dan melatih kesabaran serta toleransi sosial.
 [Tipe: PG] Alasan pentingnya kegiatan gotong royong di lingkungan perumahan sesuai rujukan teks tersebut adalah... | Untuk menunjukkan siapa warga yang paling kaya raya ~ Untuk menjaga kebersihan lingkungan agar tidak kumuh serta memupuk kerukunan ~ Untuk mendapatkan hadiah piala dari bupati setempat ~ Agar warga bisa mengumpulkan uang sumbangan setiap minggu | B | Paragraf kedua menyimpulkan bahwa gotong royong penting untuk menjaga lingkungan sehat dan kepedulian warga.
-###
 ###
 [WACANA: Menguji Fakta Kualitas Air Sungai] Sebuah berita hari ini melaporkan bahwa volume pencemaran limbah plastik di Sungai Ciliwung mengalami lonjakan drastis sepanjang tahun lalu. Menurut data resmi dari Dinas Lingkungan Hidup, volume sampah naik dari 10 ton pada bulan Januari menjadi 15 ton per bulan di akhir tahun. Masalah ini sangat memprihatinkan, namun diperburuk oleh opini sebagian oknum warga yang menganggap remeh, dengan berpendapat bahwa "membuang satu kantong plastik kecil ke sungai setiap hari tidak akan merusak ekosistem lingkungan."
 Pendapat oknum warga tersebut jelas keliru dan menyesatkan. Bukti logis di lapangan menunjukkan bahwa akumulasi (penumpukan) limbah kantong plastik tersebut menyumbat aliran air. Akibatnya, saat hujan lebat tiba, air sungai meluap memicu banjir bandang.
@@ -322,7 +308,6 @@ Untuk mempelajari penjernihan air tawar, kelompok sains SD kelas 6 melakukan per
 [Tipe: PGK] Kemampuan membedakan fakta dan opini sangat penting. Manakah dari pernyataan di bawah ini yang murni merupakan opini (pendapat subjektif) berdasarkan teks di atas? | Sungai Ciliwung mengalami lonjakan pencemaran limbah plastik. ~ Membuang satu kantong plastik kecil tidak akan merusak ekosistem lingkungan. ~ Kelompok sains SD kelas 6 menyaring air menggunakan kerikil dan pasir. ~ Penumpukan limbah kantong plastik dapat menyumbat aliran air. | B | Pilihan B adalah pandangan/asumsi keliru dari oknum warga, belum terbukti kebenarannya secara ilmiah, sehingga berstatus opini subjektif.
 [Tipe: PG] Teks argumen menyatakan pendapat warga bahwa membuang sedikit plastik tidak merusak lingkungan adalah salah. Apakah penulis teks menyajikan bukti yang logis untuk membantah pendapat warga tersebut? | Ya, argumen penulis sangat logis karena dibuktikan dengan rantai sebab-akibat bahwa akumulasi sampah memicu sumbatan yang berujung banjir ~ Tidak logis, karena satu buah kantong plastik memang ringan dan mudah larut di dalam air sungai ~ Ya logis, namun sayangnya banjir selalu terjadi akibat murni kehendak alam ~ Tidak logis, karena plastik justru bisa didaur ulang oleh ikan di sungai | A | Paragraf 2 memberikan argumen rasional (penumpukan -> penyumbatan -> meluap -> banjir) untuk menepis opini warga.
 [Tipe: PG] Mengevaluasi kesesuaian isi teks, bagaimana ketepatan kesimpulan siswa mengenai "air bening aman diminum" jika dikaitkan dengan tujuan awal laporan percobaan kelas 6 tersebut? | Sangat sesuai, karena air yang bening pasti terbebas dari segala macam kuman penyakit ~ Kesimpulan tersebut tidak sesuai, karena tujuan awal hanya mempraktikkan proses penjernihan fisik (kejernihan air), bukan uji kelayakan konsumsi atau sterilisasi bakteri ~ Sangat sesuai, karena siswa telah menggunakan susunan batu kerikil mahal ~ Tidak sesuai, karena air tersebut seharusnya berubah menjadi manis | B | Penjernihan fisik tidak membunuh patogen/bakteri. Menyimpulkan aman diminum melampaui batas observasi percobaan.
-###
 ###
 [WACANA: Kebijaksanaan Sang Raja Rimba] Suatu siang yang terik di padang sabana, Kancil menangis tersedu-sedu karena separuh ladang timun kesayangannya hancur berantakan. Rupanya, Serigala yang sebelumnya sudah berjanji akan menjaga kebun itu saat Kancil pergi memanggil bantuan irigasi, justru ingkar janji. Serigala yang serakah secara diam-diam memakan hasil panen Kancil.
 "Aku kelaparan dari kemarin, jadi wajar saja kan aku memakannya sedikit!" bantah Serigala dengan nada membentak tanpa sedikit pun merasa bersalah. Raja Singa yang dikenal bijaksana segera menggelar persidangan rimba. Setelah mendengarkan kesaksian Kancil dan bantahan Serigala, Raja Singa segera mengetuk batu besarnya. "Serigala! Karena kau telah merusak kepercayaan kawanmu dan berani ingkar janji, aku menghukummu! Kau harus bekerja menanam ulang seluruh bibit timun Kancil mulai besok pagi, dan kau dilarang memakan daging selama satu bulan penuh!" titah Raja Singa tegas.
@@ -333,7 +318,6 @@ Kancil merasa bersyukur dan hewan-hewan lain menyoraki keadilan yang ditegakkan 
 [Tipe: PG] Seandainya kamu berada di sana sebagai teman dekat Kancil, bentuk ekspresi kekecewaan yang paling sopan namun tegas yang akan kamu sampaikan kepada Serigala adalah... | "Wah, hebat sekali kamu bisa memakan timun sebanyak itu secara diam-diam, Serigala!" ~ "Aku benar-benar kecewa dengan sikapmu, Serigala. Kepercayaan itu ibarat kaca, sekali pecah akan sulit utuh kembali." ~ "Sudah kuduga kamu pasti mencurinya, dasar makhluk tidak berguna!" ~ "Tidak apa-apa Serigala, besok aku dan Kancil akan menanam lebih banyak lagi timun untuk makananmu." | B | Pilihan B menunjukkan ekspresi kekecewaan mendalam atas pengkhianatan janji tanpa cacian kasar.
 [Tipe: BS] Evaluasilah kualitas keadilan dari keputusan yang diambil oleh Raja Singa pada akhir cerita dongeng tersebut! | Keputusan Raja Singa menghukum Serigala menanam ulang timun sangat adil karena menuntut pertanggungjawaban ganti rugi secara langsung (Benar) ~ Keputusan tersebut sama sekali tidak adil karena hukuman yang diberikan terlalu memanjakan dan membela pihak Serigala (Salah) | - | Keadilan restoratif (pelaku memperbaiki kerugian korban) merupakan tindakan adil tingkat tinggi.
 ###
-###
 [WACANA: Kelabu di Desa Harapan] Hujan deras melanda wilayah hulu hingga menghadirkan musibah bagi Desa Harapan. Di mading Balai Desa, terpasang secarik puisi yang ditulis oleh seorang pengungsi anonim:
 Air bah datang tak mengetuk pintu, membawa lara tak berujung... Menyapu bersih sisa senyum di wajah polos anak desa. Rumah kayuku hanyut ditelan pusaran air cokelat, Hanya menyisakan puing-puing kenangan yang teramat pekat.
 Rina membaca bait puisi tersebut sambil terisak. Ingatannya melayang pada "Si Putih", anak anjing kesayangannya yang terlepas dari pelukan dan hilang terbawa arus saat tanggul desa jebol sore itu. Dulu, Si Putih selalu setia menemaninya menatap semburat jingga senja yang memukau di balik bukit belakang rumahnya. Kini Rina hanya terduduk lemas, ia merasa amat sangat bersalah karena genggaman tangannya saat itu kurang kuat menahan Si Putih.
@@ -343,19 +327,16 @@ Rina membaca bait puisi tersebut sambil terisak. Ingatannya melayang pada "Si Pu
 [Tipe: PG] Dalam teks tersebut diceritakan bahwa Rina mengingat kembali momen indahnya saat menatap semburat senja di balik bukit. Jika harus memilih kata sifat untuk mendeskripsikan pemandangan tersebut, kata yang mencerminkan rasa kagum Rina adalah... | Pemandangan yang sangat memilukan dan menyayat hati ~ Pemandangan alam yang memukau, indah, dan memesona ~ Pemandangan bukit yang kelam, menyeramkan, dan mistis ~ Pemandangan yang membosankan dan monoton setiap harinya | B | Keindahan senja di balik bukit sering diapresiasi dengan kata sifat "memukau" atau "memesona".
 [Tipe: PG] Jika kamu adalah tetangga Rina di posko pengungsian, tindakan nyata apa yang membuktikan bahwa kamu memiliki simpati dan kepedulian tingkat tinggi atas kehilangan hewan kesayangannya? | Menyuruh Rina segera melupakan Si Putih dan mengajaknya bermain game daring saja ~ Menyembunyikan kalung anjing milik Rina yang tersisa agar ia tidak teringat-ingat lagi ~ Turut membantu Rina menyebarkan informasi kehilangan anjing berbulu putih kepada Tim SAR dan relawan evakuasi ~ Memarahi Rina karena terus menangis dan membuat suasana posko pengungsian menjadi bising | C | Aksi proaktif membantu pencarian adalah bentuk simpati (tindakan mendukung) tertinggi bagi orang yang berduka akibat kehilangan peliharaan.
 ###
-###
-[WACANA: **Panduan Hidup Sehat di Musim Penghujan**] Musim hujan telah tiba. Kondisi cuaca yang dingin dan lembap membuat daya tahan tubuh lebih mudah menurun. Akibatnya banyak warga yang terkena penyakit menular seperti flu dan diare. Setiap hari klinik kesehatan di desa selalu penuh oleh **pasien** yang ingin berobat dan menebus obat.
+[WACANA: Panduan Hidup Sehat di Musim Penghujan] Musim hujan telah tiba. Kondisi cuaca yang dingin dan lembap membuat daya tahan tubuh lebih mudah menurun. Akibatnya banyak warga yang terkena penyakit menular seperti flu dan diare. Setiap hari klinik kesehatan di desa selalu penuh oleh **pasien** yang ingin berobat dan menebus obat.
 Dokter menyarankan agar kita semua rajin mencuci tangan menggunakan sabun anti bakteri untuk mencegah penularan penyakit. Berdasarkan panduan medis yang terpasang di dinding puskesmas, kita harus memperhatikan tata cara cuci tangan yang benar. Basahi tanganmu dengan air mengalir! Gunakan sabun secukupnya! Gosok punggung tangan dan sela-sela jari! Setelah itu bilas dengan air bersih hingga busa hilang. Terakhir keringkan tangan menggunakan tisu atau kain yang bersih. Biasakan pola hidup sehat ini setiap hari.
 [Tipe: PG] Istilah medis **pasien** pada teks tersebut memiliki makna khusus yaitu... | Orang yang membuat resep obat ~ Orang sakit yang dirawat oleh dokter ~ Petugas yang menjaga klinik ~ Dokter ahli penyakit dalam | B | Dalam bidang kesehatan, pasien berarti orang sakit yang sedang mendapat perawatan medis.
 [Tipe: PGK] Manakah kalimat yang mengandung kata kerja *imperatif* (perintah) pada teks prosedur kesehatan di atas? | Basahi tanganmu dengan air mengalir! ~ Musim hujan telah tiba. ~ Gunakan sabun secukupnya! ~ Setiap hari klinik selalu penuh. | A, C | Kata kerja imperatif berciri memberikan instruksi atau perintah (basahi, gunakan).
 [Tipe: PG] [IMG: https://i.ibb.co.com/N6cdNhgn/Gemini-Generated-Image-njunj4njunj4njun.png] Berdasarkan teks panduan tersebut, urutan langkah menyusun gambar prosedur mencuci tangan yang benar adalah... | 3-2-4-1 ~ 3-4-2-1 ~ 2-3-4-1 ~ 1-2-3-4 | A | Langkah yang logis: Basahi tangan (3), gunakan sabun (2), bilas air bersih (4), lalu keringkan (1).
 ###
-###
 [WACANA: Perjalanan Sang Proklamator Bangsa] Bangsa Indonesia memiliki banyak pahlawan hebat. Salah satu yang paling dihormati adalah Ir. Soekarno atau yang akrab disapa Bung Karno. Beliau lahir pada tanggal 6 Juni 1901. Bung Karno dikenal memiliki ciri khas penampilan yang gagah. Beliau sering mengenakan setelan jas rapi putih dan selalu memakai peci hitam di kepalanya saat berpidato di hadapan ribuan rakyat.
 Pada tahun 1927 beliau mendirikan Partai Nasional Indonesia untuk menyatukan rakyat melawan penjajah. Puncak perjuangannya terjadi saat memproklamasikan kemerdekaan Indonesia pada tanggal 17 Agustus 1945. Itu adalah **momen** paling bersejarah yang membebaskan rakyat dari penderitaan. Di masa itu masyarakat berjuang dengan senjata seadanya karena transportasi maupun teknologi peperangan modern belum banyak tersedia di negeri ini.
 [Tipe: PG] Terdapat kata **modern** pada akhir paragraf teks tersebut. Sinonim atau persamaan kata umum dari kata tersebut adalah... | Mutakhir ~ Kuno ~ Tradisional ~ Usang | A | Modern bersinonim dengan mutakhir atau terbaru yang merujuk pada kemajuan masa kini.
 [Tipe: PG] Kata serapan **momen** yang digunakan pada teks sejarah tersebut memiliki arti... | Tempat pertemuan para pahlawan ~ Senjata untuk berperang ~ Waktu yang singkat atau kesempatan bersejarah ~ Kendaraan perang zaman dahulu | C | Momen adalah kata serapan dari bahasa asing yang berarti waktu yang pendek atau saat/kesempatan penting.
-###
 ###
 [WACANA: Misteri Tongkat Naga di Pasar Hewan] Pagi itu hiruk-pikuk terdengar dari berbagai sudut. Penjual pakan sibuk menata timbangan kuningan, sementara keranjang-keranjang bambu berisi sayuran segar berjejer rapi di sepanjang jalan tanah. Di tengah keramaian itu, Detektif Kancil sedang melakukan penyelidikan rahasia.
 Raja Hutan baru saja kehilangan barang paling berharganya. Barang itu bukan sekadar perhiasan biasa, melainkan sebuah tongkat sakti berwarna emas menyala yang pada bagian ujungnya diukir dengan bentuk kepala naga yang gagah. Konon benda itu bisa mengendalikan cuaca. Detektif Kancil memeriksa kios demi kios dengan kaca pembesarnya. Di dekat sebuah tumpukan jerami ia tersenyum penuh kemenangan. Ia menemukan sehelai bulu berwarna biru cerah dan jejak kaki berlumpur tiga jari. "Tebakanku tidak mungkin meleset, hanya satu hewan di kawasan ini yang memiliki bulu sebiru langit dan kaki seperti ini," gumam Detektif Kancil bersiap melakukan penangkapan.
@@ -363,433 +344,517 @@ Raja Hutan baru saja kehilangan barang paling berharganya. Barang itu bukan seka
 [Tipe: PG] Senjata sakti milik Raja Hutan yang sedang dicari oleh Detektif Kancil memiliki deskripsi bentuk berupa... | Pedang pendek bercahaya terang ~ Panah beracun berwarna hitam ~ Tongkat emas berujung ukiran kepala naga ~ Mahkota perak bertabur berlian | C | Paragraf kedua menyebutkan dengan jelas bahwa barang sakti tersebut adalah tongkat emas berujung kepala naga.
 [Tipe: PGK] Benda apa saja yang ditemukan oleh Detektif Kancil di lokasi kejadian untuk dijadikan petunjuk bukti pemecahan misteri? | Timbangan kuningan milik penjual sayur ~ Sehelai bulu burung berwarna biru cerah ~ Jejak kaki berlumpur dengan tiga jari ~ Keranjang bambu kosong di jalan tanah | B, C | Bukti petunjuk yang ditemukan Kancil di dekat tumpukan jerami adalah bulu biru dan jejak kaki tiga jari.
 [Tipe: PG] Jika kamu diminta menyusun ulang alur peristiwa fabel misteri tersebut menjadi sebuah kerangka karangan, urutan susunan awal, tengah, dan akhir yang paling tepat adalah... | (1) Raja kehilangan tongkat sakti ~ (2) Kancil mencari bukti di keramaian pasar ~ (3) Kancil menemukan petunjuk dan bersiap menangkap pencuri | (1) Kancil menemukan bulu biru ~ (2) Raja menangis di istana ~ (3) Kancil pergi ke pasar hewan | (1) Penangkapan pencuri berbulu biru ~ (2) Pencurian tongkat naga ~ (3) Kancil berjalan keliling pasar | (1) Kancil berbelanja sayur segar ~ (2) Kancil meminjam tongkat raja ~ (3) Raja Hutan memakan sayuran | A | Alur cerita yang logis: Pengenalan masalah (kehilangan barang), proses penyelidikan di pasar (konflik tengah), dan penemuan bukti untuk penyelesaian akhir.
-###`;
+###
+`;
 
-/**
- * LOGIKA APLIKASI (ENGINE KUIS)
- */
-class QuizApp {
-    constructor() {
-        this.finalQuestionList = [];
-        this.bankCadangan = []; 
-        this.currentIndex = 0;
-        this.userAnswers = {};
-        this.timerInterval = null;
-        this.timeLeft = WAKTU_MENIT * 60;
-        this.warningCount = 0;
-        this.score = 0;
-        this.isFinished = false;
-    }
+        // ==========================================
+        // SISTEM PARSING & MIXER
+        // ==========================================
+        let bankSingle = [];
+        let bankCluster = [];
+        let finalQuestionList = [];
+        let userAnswers = {}; 
+        let currentQuestionIndex = 0;
+        let examTimer;
+        let timeLeft = WAKTU_MENIT * 60;
+        let appState = 'login';
+        let cheatWarnings = 0;
 
-    // 1. FITUR UTAMA: Parse Format Markdown
-    parseFormat(text) {
-        if(!text) return "";
-        let fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
-        fmt = fmt.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italic
-        fmt = fmt.replace(/\[IMG:\s*(.*?)\]/g, '<img src="$1" class="question-img" alt="Ilustrasi Soal">'); // Image
-        return fmt;
-    }
+        // Inisialisasi Judul UI
+        document.getElementById('appTitle').innerText = JUDUL_KUIS;
+        document.getElementById('loginTitle').innerText = JUDUL_KUIS;
 
-    // 1. FITUR UTAMA: Auto-Clean Meta Tags
-    cleanTags(text) {
-        if(!text) return "";
-        return text.replace(/\[Tipe:\s*(PG|PGK|BS)\]/gi, '').replace(/\[(PG|PGK|BS)\]/gi, '').trim();
-    }
-
-    // 1. FITUR UTAMA: Toggle PIN
-    togglePin() {
-        const pinInput = document.getElementById('pin-input');
-        const btnToggle = document.getElementById('btn-toggle-pin');
-        if (pinInput.type === "password") {
-            pinInput.type = "text";
-            btnToggle.innerText = "Sembunyi";
-        } else {
-            pinInput.type = "password";
-            btnToggle.innerText = "Lihat";
-        }
-    }
-
-    // UTILITY: Pengacak Array
-    shuffleArray(array) {
-        let arr = [...array];
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-    }
-
-    // UTILITY: Parsing baris data ke Object
-    parseSingleQuestion(rawStr, wacana = null) {
-        let parts = rawStr.split(' | ');
-        if(parts.length < 4) return null;
-        
-        let header = parts[0];
-        let tipe = header.includes('[Tipe: BS]') ? 'BS' : (header.includes('[Tipe: PGK]') ? 'PGK' : 'PG');
-        
-        // Safe Separator dengan Tilde (~)
-        let optionsRaw = parts[1].split('~').map(o => o.trim()); 
-        let key = parts[2].trim();
-        let explanation = parts[3].trim();
-
-        let parsedOptions = [];
-        if(tipe === 'BS') {
-            optionsRaw.forEach(opt => {
-                let match = opt.match(/(.*?)\s*\((Benar|Salah)\)/i);
-                if(match) {
-                    parsedOptions.push({ text: match[1].trim(), correct: match[2].trim().toUpperCase() });
-                } else {
-                    parsedOptions.push({ text: opt, correct: 'BENAR' }); // Fallback
-                }
-            });
-        } else {
-            parsedOptions = optionsRaw;
+        // Markdown Renderer (Sesuai Syarat)
+        function parseFormat(text) {
+            if (!text) return '';
+            let formatted = text.replace(/\n/g, '<br>');
+            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            return formatted;
         }
 
-        return { tipe, wacana, question: header, options: parsedOptions, key, explanation };
-    }
-
-    // 2. LOGIKA MIXER SOAL V7.1
-    prepareData() {
-        let singlePool = this.shuffleArray(RAW_SINGLE.map(q => this.parseSingleQuestion(q)).filter(q => q !== null));
-        let clusterPoolRaw = [];
-
-        // Parse semua wacana/cluster
-        let rawClusters = RAW_CLUSTER_TEXT.split('###').map(c => c.trim()).filter(c => c.length > 10);
-        rawClusters.forEach(clusterData => {
-            let lines = clusterData.split('\n');
-            let wacana = "";
-            let clusterQs = [];
+        // Pembersih Teks (Auto-Cleaner)
+        function cleanQuestionText(text) {
+            let cleaned = text.replace(/\[Tipe:\s*(PG|PGK|BS)\]/gi, '');
+            cleaned = cleaned.replace(/\[(PG|PGK|BS)\]/gi, '');
+            // Hapus nomor di awal (contoh: "1. ", "15. ", "2a. ")
+            cleaned = cleaned.replace(/^\s*\d+[a-zA-Z]?[\.\)]\s*/, '');
             
-            lines.forEach(line => {
-                if(line.startsWith('[WACANA:')) {
-                    wacana = line.replace(/\[WACANA:.*?\]\s*/, '').trim();
-                } else if(line.startsWith('[Tipe:')) {
-                    let q = this.parseSingleQuestion(line, wacana);
-                    if(q) clusterQs.push(q);
+            // Konversi IMG tag ke HTML Image
+            cleaned = cleaned.replace(/\[IMG:\s*(.*?)\]/gi, '<br><img src="$1" class="img-question" alt="Ilustrasi"><br>');
+            
+            return parseFormat(cleaned.trim());
+        }
+
+        // Parsing Raw Data
+        function parseData() {
+            // Parsing Single
+            const singleParts = RAW_SINGLE.split(/(?=\[Tipe:)/).filter(s => s.trim() !== '');
+            singleParts.forEach((part, id) => {
+                let sections = part.split('|');
+                if(sections.length >= 4) {
+                    let typeMatch = sections[0].match(/\[Tipe:\s*(PG|PGK|BS)\]/i);
+                    let type = typeMatch ? typeMatch[1].toUpperCase() : 'PG';
+                    let qText = sections[0];
+                    let rawOptions = sections[1].split('~').map(o => o.trim());
+                    
+                    let qObj = {
+                        id: 'S' + id,
+                        type: type,
+                        wacana: '',
+                        question: cleanQuestionText(qText),
+                        options: rawOptions,
+                        key: sections[2].trim(),
+                        explanation: parseFormat(sections[3].trim())
+                    };
+
+                    // Khusus BS: Parsing Kunci dari Opsi
+                    if(type === 'BS') {
+                        qObj.bsData = rawOptions.map(opt => {
+                            let match = opt.match(/(.*?)\s*\((Benar|Salah)\)/i);
+                            return {
+                                statement: match ? match[1].trim() : opt.trim(),
+                                correct: match ? match[2].trim() : ''
+                            };
+                        });
+                    }
+                    bankSingle.push(qObj);
                 }
             });
-            if(clusterQs.length > 0) clusterPoolRaw.push({ wacana: wacana, questions: clusterQs });
-        });
 
-        let clusterPool = this.shuffleArray(clusterPoolRaw);
-        let qList = [];
-
-        // Helper untuk mengisi cluster
-        const fillCluster = (targetNeeded) => {
-            let countAdded = 0;
-            while(countAdded < targetNeeded && clusterPool.length > 0) {
-                let cl = clusterPool.shift();
-                let qs = this.shuffleArray(cl.questions);
-                let take = Math.min(2, targetNeeded - countAdded, qs.length); // Max 2 per cluster
+            // Parsing Cluster
+            const clusterBlocks = RAW_CLUSTER.split('###').filter(b => b.trim() !== '');
+            clusterBlocks.forEach((block, cId) => {
+                let parts = block.split(/(?=\[Tipe:)/i);
+                let headerPart = parts.shift();
                 
-                for(let i=0; i<take; i++) {
-                    qList.push(qs[i]);
-                    countAdded++;
+                let wacanaTitle = "";
+                let wacanaText = headerPart;
+                let wMatch = headerPart.match(/\[WACANA:\s*(.*?)\]([\s\S]*)/i);
+                if(wMatch) {
+                    wacanaTitle = wMatch[1].trim();
+                    wacanaText = wMatch[2].trim();
                 }
-                // Sisa soal di dalam cluster dimasukkan ke Bank Cadangan
-                for(let i=take; i<qs.length; i++) {
-                    this.bankCadangan.push(qs[i]);
+
+                let finalWacanaHTML = wacanaTitle ? `<div class="wacana-title">[WACANA: ${wacanaTitle}]</div>${parseFormat(wacanaText)}` : parseFormat(wacanaText);
+                
+                let clObj = { id: 'C'+cId, wacana: finalWacanaHTML, questions: [] };
+
+                parts.forEach((part, qId) => {
+                    let sections = part.split('|');
+                    if(sections.length >= 4) {
+                        let typeMatch = sections[0].match(/\[Tipe:\s*(PG|PGK|BS)\]/i);
+                        let type = typeMatch ? typeMatch[1].toUpperCase() : 'PG';
+                        let rawOptions = sections[1].split('~').map(o => o.trim());
+                        
+                        let qObj = {
+                            id: 'C'+cId+'_Q'+qId,
+                            type: type,
+                            wacana: clObj.wacana,
+                            question: cleanQuestionText(sections[0]),
+                            options: rawOptions,
+                            key: sections[2].trim(),
+                            explanation: parseFormat(sections[3].trim())
+                        };
+
+                        if(type === 'BS') {
+                            qObj.bsData = rawOptions.map(opt => {
+                                let match = opt.match(/(.*?)\s*\((Benar|Salah)\)/i);
+                                return { statement: match ? match[1].trim() : opt.trim(), correct: match ? match[2].trim() : '' };
+                            });
+                        }
+                        clObj.questions.push(qObj);
+                    }
+                });
+                if(clObj.questions.length > 0) bankCluster.push(clObj);
+            });
+        }
+
+        // Mixer Engine
+        function generateMixer() {
+            // Pengacak Array
+            const shuffle = (array) => { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } };
+            
+            shuffle(bankSingle);
+            shuffle(bankCluster);
+
+            const getSingle = (count) => {
+                let res = [];
+                for(let i=0; i<count; i++) { if(bankSingle.length > 0) res.push(bankSingle.shift()); }
+                return res;
+            };
+
+            const getCluster = (count) => {
+                let res = [];
+                for(let i=0; i<bankCluster.length; i++) {
+                    let cl = bankCluster[i];
+                    let toTake = Math.min(cl.questions.length, 2, count - res.length);
+                    for(let j=0; j<toTake; j++) {
+                        let qIdx = Math.floor(Math.random() * cl.questions.length);
+                        res.push(cl.questions.splice(qIdx, 1)[0]);
+                    }
+                    if(res.length >= count) break;
+                }
+                bankCluster = bankCluster.filter(c => c.questions.length > 0);
+                return res;
+            };
+
+            // Struktur Ujian (Pemanasan, Literasi A, Selingan, Literasi B, Penutup)
+            finalQuestionList.push(...getSingle(3)); // 1-3
+            finalQuestionList.push(...getCluster(7)); // 4-10
+            finalQuestionList.push(...getSingle(3)); // 11-13
+            finalQuestionList.push(...getCluster(7)); // 14-20
+            
+            let remaining = TARGET_TOTAL_SOAL - finalQuestionList.length;
+            let takeCl = Math.floor(remaining / 2);
+            finalQuestionList.push(...getCluster(takeCl));
+            finalQuestionList.push(...getSingle(TARGET_TOTAL_SOAL - finalQuestionList.length));
+
+            // Jika masih kurang (fallback)
+            while(finalQuestionList.length < TARGET_TOTAL_SOAL && bankSingle.length > 0) {
+                finalQuestionList.push(bankSingle.shift());
+            }
+        }
+
+        // ==========================================
+        // UI & INTERAKSI APLIKASI
+        // ==========================================
+        function togglePin() {
+            let input = document.getElementById("pinInput");
+            if (input.type === "password") { input.type = "text"; } else { input.type = "password"; }
+        }
+
+        function startExam() {
+            let input = document.getElementById("pinInput").value;
+            if(input === PIN_AKSES) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appScreen').classList.remove('hidden');
+                
+                parseData();
+                generateMixer();
+                buildGrid();
+                appState = 'playing';
+                startTimer();
+                renderQuestion(0);
+            } else {
+                document.getElementById('pinError').style.display = 'block';
+            }
+        }
+
+        function buildGrid() {
+            let gridHtml = '';
+            for(let i = 0; i < finalQuestionList.length; i++) {
+                gridHtml += `<div class="grid-item" id="grid-${i}" onclick="renderQuestion(${i})">${i + 1}</div>`;
+            }
+            document.getElementById('cbtGrid').innerHTML = gridHtml;
+        }
+
+        function updateGridStatus() {
+            for(let i = 0; i < finalQuestionList.length; i++) {
+                let el = document.getElementById(`grid-${i}`);
+                el.classList.remove('active');
+                if(userAnswers[i] && Object.keys(userAnswers[i]).length > 0) el.classList.add('answered');
+                if(i === currentQuestionIndex) el.classList.add('active');
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function renderQuestion(index) {
+            currentQuestionIndex = index;
+            let q = finalQuestionList[index];
+            let html = '';
+
+            // Wacana Sticky
+            if(q.wacana) {
+                html += `<div class="wacana-box">${q.wacana}</div>`;
+            }
+
+            // Header Soal
+            html += `
+                <div class="question-header">
+                    <span>Soal ${index + 1} / ${finalQuestionList.length}</span>
+                    <span style="background:var(--accent); color:var(--primary); padding:3px 10px; border-radius:12px; font-size:12px;">Tipe: ${q.type}</span>
+                </div>
+                <div class="question-body">
+                    <p style="margin-top:0;">${q.question}</p>
+            `;
+
+            // Opsi Jawaban
+            const labels = ['A', 'B', 'C', 'D', 'E'];
+            
+            if(q.type === 'PG') {
+                q.options.forEach((opt, idx) => {
+                    let isChecked = (userAnswers[index] === labels[idx]) ? 'checked' : '';
+                    html += `
+                        <label class="option-label ${isChecked ? 'selected' : ''}">
+                            <input type="radio" name="opt_${index}" value="${labels[idx]}" onchange="saveAnswer(${index}, '${labels[idx]}')" ${isChecked}>
+                            <strong>${labels[idx]}.</strong> ${parseFormat(opt)}
+                        </label>
+                    `;
+                });
+            } else if(q.type === 'PGK') {
+                let savedArr = userAnswers[index] || [];
+                q.options.forEach((opt, idx) => {
+                    let isChecked = savedArr.includes(labels[idx]) ? 'checked' : '';
+                    html += `
+                        <label class="option-label ${isChecked ? 'selected' : ''}">
+                            <input type="checkbox" name="opt_${index}" value="${labels[idx]}" onchange="savePGK(${index}, '${labels[idx]}')" ${isChecked}>
+                            <strong>${labels[idx]}.</strong> ${parseFormat(opt)}
+                        </label>
+                    `;
+                });
+            } else if(q.type === 'BS') {
+                let savedBS = userAnswers[index] || {};
+                html += `<table class="bs-table">
+                            <thead><tr><th>Pernyataan</th><th>Benar</th><th>Salah</th></tr></thead>
+                            <tbody>`;
+                q.bsData.forEach((item, idx) => {
+                    let valBenar = savedBS[idx] === 'Benar' ? 'checked' : '';
+                    let valSalah = savedBS[idx] === 'Salah' ? 'checked' : '';
+                    html += `<tr>
+                                <td>${parseFormat(item.statement)}</td>
+                                <td><input type="radio" class="bs-radio" name="bs_${index}_${idx}" value="Benar" onchange="saveBS(${index}, ${idx}, 'Benar')" ${valBenar}></td>
+                                <td><input type="radio" class="bs-radio" name="bs_${index}_${idx}" value="Salah" onchange="saveBS(${index}, ${idx}, 'Salah')" ${valSalah}></td>
+                             </tr>`;
+                });
+                html += `</tbody></table>`;
+            }
+
+            html += `</div>`;
+            document.getElementById('questionCard').innerHTML = html;
+            updateGridStatus();
+
+            // Nav Button Control
+            document.getElementById('btnPrev').style.visibility = (index === 0) ? 'hidden' : 'visible';
+            if(index === finalQuestionList.length - 1) {
+                document.getElementById('btnNext').classList.add('hidden');
+                document.getElementById('btnSubmit').classList.remove('hidden');
+            } else {
+                document.getElementById('btnNext').classList.remove('hidden');
+                document.getElementById('btnSubmit').classList.add('hidden');
+            }
+        }
+
+        function navigate(dir) {
+            let newIndex = currentQuestionIndex + dir;
+            if(newIndex >= 0 && newIndex < finalQuestionList.length) renderQuestion(newIndex);
+        }
+
+        function saveAnswer(qIndex, val) {
+            userAnswers[qIndex] = val;
+            renderQuestion(qIndex); // re-render to highlight selection
+        }
+
+        function savePGK(qIndex, val) {
+            if(!userAnswers[qIndex]) userAnswers[qIndex] = [];
+            let arr = userAnswers[qIndex];
+            if(arr.includes(val)) {
+                arr.splice(arr.indexOf(val), 1);
+            } else {
+                arr.push(val);
+            }
+            if(arr.length === 0) delete userAnswers[qIndex];
+            renderQuestion(qIndex);
+        }
+
+        function saveBS(qIndex, stmtIndex, val) {
+            if(!userAnswers[qIndex]) userAnswers[qIndex] = {};
+            userAnswers[qIndex][stmtIndex] = val;
+            
+            // Validasi apakah seluruh BS terisi
+            let q = finalQuestionList[qIndex];
+            if(Object.keys(userAnswers[qIndex]).length === q.bsData.length) {
+                updateGridStatus();
+            }
+        }
+
+        // ==========================================
+        // KEAMANAN & TIMER
+        // ==========================================
+        document.addEventListener('visibilitychange', () => {
+            if(document.visibilityState === 'hidden' && appState === 'playing') {
+                cheatWarnings++;
+                if(cheatWarnings >= 3) {
+                    alert("DISKUALIFIKASI! Anda telah keluar dari tab ujian sebanyak 3 kali.");
+                    finishExam(true);
+                } else {
+                    alert(`PERINGATAN KECURANGAN (${cheatWarnings}/3)!\nSistem mencatat Anda keluar dari layar ujian. Pelanggaran 3 kali akan menyebabkan diskualifikasi otomatis.`);
                 }
             }
-        };
+        });
 
-        // STEP 1: Pemanasan (No 1-3) -> 3 Single
-        qList.push(...singlePool.splice(0, 3));
-
-        // STEP 2: Literasi A (No 4-10) -> 7 soal dari Cluster
-        fillCluster(7);
-
-        // STEP 3: Selingan (No 11-13) -> 3 Single
-        qList.push(...singlePool.splice(0, 3));
-
-        // STEP 4: Literasi B (No 14-20) -> 7 soal dari Cluster
-        fillCluster(7);
-
-        // STEP 5: Penutup (No 21-30) -> Sisa kuota campur
-        let sisaPool = [...singlePool, ...this.bankCadangan];
-        // Masukkan sisa cluster yang belum tersentuh ke sisaPool
-        clusterPool.forEach(cl => sisaPool.push(...cl.questions)); 
-        
-        sisaPool = this.shuffleArray(sisaPool);
-
-        let needed = TARGET_TOTAL_SOAL - qList.length;
-        if(needed > 0) {
-            qList.push(...sisaPool.splice(0, needed));
+        function startTimer() {
+            examTimer = setInterval(() => {
+                if(timeLeft <= 0) { clearInterval(examTimer); finishExam(); }
+                let h = Math.floor(timeLeft / 3600);
+                let m = Math.floor((timeLeft % 3600) / 60);
+                let s = timeLeft % 60;
+                document.getElementById('timerDisplay').innerText = 
+                    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                timeLeft--;
+            }, 1000);
         }
 
-        // Data Storage: Simpan sisa asli ke Bank Cadangan sesuai spesifikasi
-        this.bankCadangan = sisaPool; 
-        this.finalQuestionList = qList.slice(0, TARGET_TOTAL_SOAL);
-    }
-
-    // ALUR APLIKASI
-    startKuis() {
-        const pin = document.getElementById('pin-input').value;
-        if(pin !== PIN_AKSES) {
-            document.getElementById('login-error').classList.remove('hidden');
-            return;
+        // ==========================================
+        // PENILAIAN & REVIEW
+        // ==========================================
+        function confirmSubmit() {
+            let ansCount = Object.keys(userAnswers).length;
+            if(ansCount < finalQuestionList.length) {
+                if(confirm(`Anda baru menjawab ${ansCount} dari ${finalQuestionList.length} soal. Yakin ingin mengakhiri ujian?`)) finishExam();
+            } else {
+                if(confirm("Apakah Anda yakin ingin menyelesaikan ujian sekarang?")) finishExam();
+            }
         }
-        
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        
-        this.prepareData();
-        this.startTimer();
-        this.setupAntiCheat();
-        this.renderQuestion();
-    }
 
-    startTimer() {
-        let display = document.getElementById('timer-display');
-        this.timerInterval = setInterval(() => {
-            if(this.timeLeft <= 0) {
-                clearInterval(this.timerInterval);
-                this.finishQuiz();
+        let finalScoreValue = 0;
+
+        function finishExam(disqualified = false) {
+            clearInterval(examTimer);
+            appState = 'finished';
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            document.getElementById('appFooter').classList.remove('hidden');
+
+            if(disqualified) {
+                document.getElementById('finalScore').innerText = "0";
+                document.getElementById('resultMessage').innerText = "ANDA DIDISKUALIFIKASI KARENA TERINDIKASI CURANG.";
+                document.getElementById('resultMessage').style.color = "red";
                 return;
             }
-            this.timeLeft--;
-            let m = Math.floor(this.timeLeft / 60);
-            let s = this.timeLeft % 60;
-            display.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        }, 1000);
-    }
 
-    setupAntiCheat() {
-        document.addEventListener('visibilitychange', () => {
-            if (this.isFinished) return;
-            if (document.visibilityState === 'hidden' && !document.getElementById('quiz-screen').classList.contains('hidden')) {
-                this.warningCount++;
-                document.getElementById('warn-count').innerText = this.warningCount;
-                document.getElementById('warning-overlay').classList.remove('hidden');
-                
-                if(this.warningCount >= 3) {
-                    this.closeWarning();
-                    alert("DISKUALIFIKASI! Anda telah meninggalkan ujian 3 kali.");
-                    this.finishQuiz();
+            let correctCount = 0;
+            finalQuestionList.forEach((q, idx) => {
+                let userAns = userAnswers[idx];
+                let isCorrect = false;
+
+                if(q.type === 'PG') {
+                    if(userAns === q.key) isCorrect = true;
+                } else if(q.type === 'PGK') {
+                    let keyArr = q.key.split(',').map(k=>k.trim()).sort();
+                    let uArr = (userAns || []).sort();
+                    if(JSON.stringify(keyArr) === JSON.stringify(uArr)) isCorrect = true;
+                } else if(q.type === 'BS') {
+                    let bsCorrect = true;
+                    if(!userAns || Object.keys(userAns).length !== q.bsData.length) bsCorrect = false;
+                    else {
+                        q.bsData.forEach((item, bIdx) => {
+                            if(userAns[bIdx] !== item.correct) bsCorrect = false;
+                        });
+                    }
+                    if(bsCorrect) isCorrect = true;
                 }
+
+                if(isCorrect) correctCount++;
+            });
+
+            finalScoreValue = Math.round((correctCount / finalQuestionList.length) * 100);
+            document.getElementById('finalScore').innerText = finalScoreValue;
+            
+            if(finalScoreValue >= 80) {
+                document.getElementById('resultMessage').innerText = "Luar Biasa! Anda melampaui KKM.";
+                document.getElementById('btnSertifikat').classList.remove('hidden');
+            } else {
+                document.getElementById('resultMessage').innerText = "Terus semangat belajar, nilai Anda masih di bawah KKM (80).";
             }
-        });
-    }
-
-    closeWarning() {
-        document.getElementById('warning-overlay').classList.add('hidden');
-    }
-
-    // RENDER UI SOAL
-    renderQuestion() {
-        let q = this.finalQuestionList[this.currentIndex];
-        document.getElementById('q-counter').innerText = `Soal ${this.currentIndex + 1} / ${this.finalQuestionList.length}`;
-        
-        let card = document.getElementById('question-card');
-        card.innerHTML = '';
-
-        // Render Sticky Header
-        if(q.wacana) {
-            let wacanaDiv = document.createElement('div');
-            wacanaDiv.className = 'wacana-header';
-            wacanaDiv.innerHTML = `<strong>WACANA:</strong><br>${this.parseFormat(q.wacana)}`;
-            card.appendChild(wacanaDiv);
         }
 
-        // Render Body (dengan Auto Clean Tag)
-        let bodyDiv = document.createElement('div');
-        bodyDiv.className = 'question-body';
-        let cleanQText = this.cleanTags(q.question);
-        bodyDiv.innerHTML = `${this.currentIndex + 1}. ${this.parseFormat(cleanQText)}`;
-        card.appendChild(bodyDiv);
+        function showReview() {
+            let container = document.getElementById('reviewContainer');
+            container.classList.remove('hidden');
+            let html = '<h3 style="color:var(--primary); border-bottom:2px solid var(--accent); padding-bottom:10px;">Review Pembahasan</h3>';
+            
+            finalQuestionList.forEach((q, idx) => {
+                let uAns = userAnswers[idx];
+                let isCorrect = false;
+                let ansText = "Belum Dijawab";
 
-        let optContainer = document.createElement('div');
-        optContainer.className = 'options-container';
+                if(q.type === 'PG') {
+                    isCorrect = (uAns === q.key);
+                    ansText = uAns || "Kosong";
+                } else if(q.type === 'PGK') {
+                    let keyArr = q.key.split(',').map(k=>k.trim()).sort();
+                    let uArr = (uAns || []).sort();
+                    isCorrect = JSON.stringify(keyArr) === JSON.stringify(uArr);
+                    ansText = uArr.join(', ') || "Kosong";
+                } else if(q.type === 'BS') {
+                    let bsCorrect = true;
+                    if(!uAns || Object.keys(uAns).length !== q.bsData.length) bsCorrect = false;
+                    else {
+                        q.bsData.forEach((item, bIdx) => { if(uAns[bIdx] !== item.correct) bsCorrect = false; });
+                    }
+                    isCorrect = bsCorrect;
+                    ansText = isCorrect ? "Tepat Sesuai Kunci" : "Ada pernyataan yang tidak tepat";
+                }
 
-        // Render Opsi Berdasarkan Tipe
-        if(q.tipe === 'BS') {
-            let table = `<table class="bs-table"><tr><th>Pernyataan</th><th width="160">Benar / Salah</th></tr>`;
-            q.options.forEach((opt, idx) => {
-                let savedAns = this.userAnswers[`${this.currentIndex}_${idx}`] || '';
-                table += `<tr>
-                    <td>${this.parseFormat(opt.text)}</td>
-                    <td>
-                        <div class="bs-radio-group">
-                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="BENAR" onchange="app.saveAnswer('BS', '${idx}', 'BENAR')" ${savedAns==='BENAR'?'checked':''}> Benar</label>
-                            <label><input type="radio" name="bs_${this.currentIndex}_${idx}" value="SALAH" onchange="app.saveAnswer('BS', '${idx}', 'SALAH')" ${savedAns==='SALAH'?'checked':''}> Salah</label>
+                html += `
+                    <div class="review-item ${isCorrect ? 'correct' : 'wrong'}">
+                        <strong>Soal ${idx+1} (${q.type})</strong> - ${isCorrect ? '<span style="color:green">Benar</span>' : '<span style="color:red">Salah</span>'}<br>
+                        <p>${q.question}</p>
+                        <div style="font-size: 0.9em; margin-bottom: 10px;">
+                            Jawaban Anda: <b>${ansText}</b> <br>
+                            Kunci Jawaban: <b>${q.type === 'BS' ? 'Lihat Pembahasan' : q.key}</b>
                         </div>
-                    </td>
-                </tr>`;
-            });
-            table += `</table>`;
-            optContainer.innerHTML = table;
-        } 
-        else if(q.tipe === 'PGK') {
-            let labels = ['A','B','C','D','E'];
-            q.options.forEach((opt, idx) => {
-                let isChecked = (this.userAnswers[this.currentIndex] || []).includes(labels[idx]) ? 'checked' : '';
-                optContainer.innerHTML += `
-                    <label class="option-label">
-                        <input type="checkbox" value="${labels[idx]}" onchange="app.saveAnswer('PGK', '${labels[idx]}', this.checked)" ${isChecked}>
-                        <div><strong>${labels[idx]}.</strong> ${this.parseFormat(opt)}</div>
-                    </label>
+                        <div class="pembahasan"><strong>Pembahasan:</strong><br>${q.explanation}</div>
+                    </div>
                 `;
             });
+            container.innerHTML = html;
         }
-        else { // PG
-            let labels = ['A','B','C','D','E'];
-            q.options.forEach((opt, idx) => {
-                let isChecked = this.userAnswers[this.currentIndex] === labels[idx] ? 'checked' : '';
-                optContainer.innerHTML += `
-                    <label class="option-label">
-                        <input type="radio" name="pg_${this.currentIndex}" value="${labels[idx]}" onchange="app.saveAnswer('PG', '${labels[idx]}')" ${isChecked}>
-                        <div><strong>${labels[idx]}.</strong> ${this.parseFormat(opt)}</div>
-                    </label>
-                `;
-            });
+
+        function generateSertifikat() {
+            // Pembuatan Sertifikat Sederhana menggunakan manipulasi canvas HTML5
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#0F3D81';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            // Border Emas
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            // Teks Sertifikat
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#0F3D81';
+            
+            ctx.font = 'bold 40px Arial';
+            ctx.fillText('SERTIFIKAT PENGHARGAAN', canvas.width / 2, 120);
+            
+            ctx.font = '20px Arial';
+            ctx.fillText('Diberikan kepada siswa/i yang telah menyelesaikan:', canvas.width / 2, 200);
+            
+            ctx.font = 'bold 30px Arial';
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillText(JUDUL_KUIS, canvas.width / 2, 250);
+
+            ctx.fillStyle = '#333';
+            ctx.font = '20px Arial';
+            ctx.fillText('Dengan Nilai Akhir:', canvas.width / 2, 350);
+
+            ctx.font = 'bold 80px Arial';
+            ctx.fillStyle = '#28a745';
+            ctx.fillText(finalScoreValue, canvas.width / 2, 450);
+
+            ctx.font = 'italic 18px Arial';
+            ctx.fillStyle = '#555';
+            ctx.fillText('Diselenggarakan oleh Belajar Sukses © 2026', canvas.width / 2, 540);
+
+            // Trigger Download
+            const link = document.createElement('a');
+            link.download = `Sertifikat_${JUDUL_KUIS}_Nilai_${finalScoreValue}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
         }
-        card.appendChild(optContainer);
-
-        // Nav Buttons
-        document.getElementById('btn-prev').disabled = this.currentIndex === 0;
-        if(this.currentIndex === this.finalQuestionList.length - 1) {
-            document.getElementById('btn-next').classList.add('hidden');
-            document.getElementById('btn-submit').classList.remove('hidden');
-        } else {
-            document.getElementById('btn-next').classList.remove('hidden');
-            document.getElementById('btn-submit').classList.add('hidden');
-        }
-    }
-
-    saveAnswer(type, val1, val2) {
-        if(type === 'PG') {
-            this.userAnswers[this.currentIndex] = val1;
-        } else if (type === 'PGK') {
-            if(!this.userAnswers[this.currentIndex]) this.userAnswers[this.currentIndex] = [];
-            if(val2) this.userAnswers[this.currentIndex].push(val1);
-            else this.userAnswers[this.currentIndex] = this.userAnswers[this.currentIndex].filter(v => v !== val1);
-        } else if (type === 'BS') {
-            this.userAnswers[`${this.currentIndex}_${val1}`] = val2;
-        }
-    }
-
-    // 1. FITUR UTAMA: Validasi wajib isi BS
-    validateCurrentBS() {
-        let q = this.finalQuestionList[this.currentIndex];
-        if(q.tipe === 'BS') {
-            for(let i=0; i<q.options.length; i++) {
-                if(!this.userAnswers[`${this.currentIndex}_${i}`]) return false;
-            }
-        }
-        return true;
-    }
-
-    nextQuestion() {
-        if(!this.validateCurrentBS()) {
-            alert("Harap pilih opsi 'Benar' atau 'Salah' untuk seluruh pernyataan sebelum lanjut.");
-            return;
-        }
-        if(this.currentIndex < this.finalQuestionList.length - 1) {
-            this.currentIndex++;
-            this.renderQuestion();
-        }
-    }
-
-    prevQuestion() {
-        if(this.currentIndex > 0) {
-            this.currentIndex--;
-            this.renderQuestion();
-        }
-    }
-
-    finishQuiz() {
-        if(!this.isFinished && !this.validateCurrentBS() && this.timeLeft > 0) {
-            if(!confirm("Pernyataan Benar/Salah pada soal ini belum lengkap dijawab. Yakin ingin mengakhiri?")) return;
-        }
-        this.isFinished = true;
-        clearInterval(this.timerInterval);
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        
-        this.calculateScore();
-        this.buildReviewGrid();
-    }
-
-    calculateScore() {
-        let totalBenar = 0;
-        this.finalQuestionList.forEach((q, i) => {
-            q.isCorrect = false;
-            if(q.tipe === 'PG') {
-                if(this.userAnswers[i] === q.key) { totalBenar++; q.isCorrect = true; }
-            } else if (q.tipe === 'PGK') {
-                let ansArray = (this.userAnswers[i] || []).sort().join(',');
-                let keyArray = q.key.replace(/\s/g, '').split(',').sort().join(',');
-                if(ansArray === keyArray) { totalBenar++; q.isCorrect = true; }
-            } else if (q.tipe === 'BS') {
-                let isRowBenar = true;
-                for(let j=0; j<q.options.length; j++) {
-                    if(this.userAnswers[`${i}_${j}`] !== q.options[j].correct) isRowBenar = false;
-                }
-                if(isRowBenar) { totalBenar++; q.isCorrect = true; }
-            }
-        });
-
-        this.score = Math.round((totalBenar / this.finalQuestionList.length) * 100);
-        document.getElementById('final-score').innerText = this.score;
-        
-        let stat = document.getElementById('status-kelulusan');
-        if(this.score >= 80) {
-            stat.innerText = "LULUS! Anda melampaui batas KKM.";
-            stat.style.color = "var(--success)";
-            document.getElementById('btn-cert').classList.remove('hidden');
-        } else {
-            stat.innerText = "BELUM LULUS. Silakan ulangi & pelajari kembali.";
-            stat.style.color = "var(--danger)";
-        }
-    }
-
-    // Modal Popup Pembahasan Instan
-    buildReviewGrid() {
-        let grid = document.getElementById('review-grid');
-        grid.innerHTML = '';
-        this.finalQuestionList.forEach((q, i) => {
-            let btn = document.createElement('button');
-            btn.className = `review-btn ${q.isCorrect ? 'correct' : 'wrong'}`;
-            btn.innerText = i + 1;
-            btn.onclick = () => this.showModalPembahasan(i);
-            grid.appendChild(btn);
-        });
-    }
-
-    showModalPembahasan(index) {
-        let q = this.finalQuestionList[index];
-        let modalBody = document.getElementById('modal-body');
-        
-        let jawabanSiswa = q.tipe === 'BS' ? 'Lihat pada input Tabel Opsi' : (this.userAnswers[index] || 'Tidak Menjawab');
-        
-        modalBody.innerHTML = `
-            ${q.wacana ? `<div style="font-size:0.85rem; color:#555; margin-bottom:10px;"><em>[Wacana Terlampir di Kartu Soal]</em></div>` : ''}
-            <p><strong>Pertanyaan:</strong><br>${this.parseFormat(this.cleanTags(q.question))}</p>
-            <p style="color:var(--royal-blue)"><strong>Jawaban Anda:</strong> ${jawabanSiswa}</p>
-            <p style="color:var(--success)"><strong>Kunci Jawaban:</strong> ${q.key !== '-' ? q.key : 'Terlampir dalam Pembahasan'}</p>
-            <div class="pembahasan-box">
-                <strong>Pembahasan Lengkap:</strong><br>
-                ${this.parseFormat(q.explanation)}
-            </div>
-        `;
-        document.getElementById('modal-overlay').classList.remove('hidden');
-    }
-
-    closeModal() {
-        document.getElementById('modal-overlay').classList.add('hidden');
-    }
-
-    // Sertifikat Generator (Print)
-    downloadCertificate() {
-        document.getElementById('cert-title').innerText = JUDUL_KUIS;
-        document.getElementById('cert-score').innerText = this.score;
-        window.print();
-    }
-}
-
-// Inisialisasi App
-const app = new QuizApp();
-</script>
+    </script>
 </body>
 </html>
